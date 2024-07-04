@@ -37,23 +37,12 @@ Board::~Board(){
 }
 
 void Board::initBoard(){
-
-    initIntersections();
     initRoads();
     initTiles();
+    initIntersections();
 }
 
 void Board::initIntersections(){
-
-// for (size_t i = 0; i < intersections.size(); ++i) {
-//     intersections[i]->setId(i);
-// }
-
-    // int i = 0;
-    // for(Intersection* intersection : intersections){
-    //     intersection->setId(i);
-    //     i++;
-    // }
 
     for (size_t i = 0; i < INTERSECTIONS; ++i) {
         intersections[i] = new Intersection(i);
@@ -75,6 +64,14 @@ void Board::initIntersections(){
     intersections[5]->setAdjRoad(roads[4], roads[5], nullptr);
     intersections[6]->setAdjRoad(roads[5], roads[9], nullptr);
 
+    intersections[0]->setAdjTile(tiles[0], nullptr, nullptr);
+    intersections[1]->setAdjTile(tiles[0], nullptr, nullptr);
+    intersections[2]->setAdjTile(tiles[0], tiles[1], nullptr);
+    intersections[3]->setAdjTile(tiles[1], nullptr, nullptr);
+    intersections[4]->setAdjTile(tiles[1], tiles[2], nullptr);
+    intersections[5]->setAdjTile(tiles[2], nullptr, nullptr);
+    intersections[6]->setAdjTile(tiles[2], nullptr, nullptr);
+
     intersections[7]->setAdjIntersection(intersections[8], intersections[17], nullptr);
     intersections[8]->setAdjIntersection(intersections[0], intersections[9], intersections[7]);
     intersections[9]->setAdjIntersection(intersections[8], intersections[10], intersections[19]);
@@ -94,6 +91,16 @@ void Board::initIntersections(){
     intersections[13]->setAdjRoad(roads[15], roads[16], roads[21]);
     intersections[14]->setAdjRoad(roads[16], roads[9], roads[17]);
     intersections[15]->setAdjRoad(roads[17], nullptr, roads[22]);
+
+    intersections[7]->setAdjTile(tiles[3], nullptr, nullptr);
+    intersections[8]->setAdjTile(tiles[0], tiles[3], nullptr);
+    intersections[9]->setAdjTile(tiles[0], tiles[3], tiles[4]);
+    intersections[10]->setAdjTile(tiles[0], tiles[1], tiles[4]);
+    intersections[11]->setAdjTile(tiles[1], tiles[4], tiles[5]);
+    intersections[12]->setAdjTile(tiles[1], tiles[2], tiles[5]);
+    intersections[13]->setAdjTile(tiles[2], tiles[5], tiles[6]);
+    intersections[14]->setAdjTile(tiles[2], tiles[6], nullptr);
+    intersections[15]->setAdjTile(tiles[6], nullptr, nullptr);
 
     intersections[16]->setAdjIntersection(intersections[17], intersections[27], nullptr);
     intersections[17]->setAdjIntersection(intersections[7], intersections[18], intersections[16]);
@@ -119,6 +126,18 @@ void Board::initIntersections(){
     intersections[25]->setAdjRoad(roads[31], roads[32], roads[22]);
     intersections[26]->setAdjRoad(roads[32], nullptr, roads[38]);
 
+    intersections[16]->setAdjTile(tiles[7], nullptr, nullptr);
+    intersections[17]->setAdjTile(tiles[3], tiles[7], nullptr);
+    intersections[18]->setAdjTile(tiles[3], tiles[7], tiles[8]);
+    intersections[19]->setAdjTile(tiles[3], tiles[4], tiles[8]);
+    intersections[20]->setAdjTile(tiles[4], tiles[8], tiles[9]);
+    intersections[21]->setAdjTile(tiles[4], tiles[5], tiles[9]);
+    intersections[22]->setAdjTile(tiles[5], tiles[9], tiles[10]);
+    intersections[23]->setAdjTile(tiles[5], tiles[6], tiles[10]);
+    intersections[24]->setAdjTile(tiles[6], tiles[10], tiles[11]);
+    intersections[25]->setAdjTile(tiles[6], nullptr, tiles[11]);
+    intersections[26]->setAdjTile(tiles[11], nullptr, nullptr);
+
     intersections[27]->setAdjIntersection(intersections[16], intersections[28], nullptr);
     intersections[28]->setAdjIntersection(intersections[27], intersections[29], intersections[38]);
     intersections[29]->setAdjIntersection(intersections[28], intersections[18], intersections[30]);
@@ -143,6 +162,18 @@ void Board::initIntersections(){
     intersections[36]->setAdjRoad(roads[47], roads[48], roads[53]);
     intersections[37]->setAdjRoad(roads[48], nullptr, roads[38]);
 
+    intersections[27]->setAdjTile(tiles[7], nullptr, nullptr);
+    intersections[28]->setAdjTile(tiles[7], tiles[12], nullptr);
+    intersections[29]->setAdjTile(tiles[7], tiles[8], tiles[12]);
+    intersections[30]->setAdjTile(tiles[8], tiles[12], tiles[13]);
+    intersections[31]->setAdjTile(tiles[8], tiles[9], tiles[13]);
+    intersections[32]->setAdjTile(tiles[9], tiles[13], tiles[14]);
+    intersections[33]->setAdjTile(tiles[9], tiles[10], tiles[14]);
+    intersections[34]->setAdjTile(tiles[10], tiles[14], tiles[15]);
+    intersections[35]->setAdjTile(tiles[10], tiles[11], tiles[15]);
+    intersections[36]->setAdjTile(tiles[11], tiles[15], nullptr);
+    intersections[37]->setAdjTile(tiles[11], nullptr, nullptr);
+
     intersections[38]->setAdjIntersection(intersections[28], intersections[39], nullptr);
     intersections[39]->setAdjIntersection(intersections[38], intersections[40], intersections[47]);
     intersections[40]->setAdjIntersection(intersections[39], intersections[30], intersections[41]);
@@ -163,6 +194,16 @@ void Board::initIntersections(){
     intersections[45]->setAdjRoad(roads[60], roads[61], roads[65]);
     intersections[46]->setAdjRoad(roads[61], nullptr, roads[53]);
 
+    intersections[38]->setAdjTile(tiles[12], nullptr, nullptr);
+    intersections[39]->setAdjTile(tiles[12], tiles[16], nullptr);
+    intersections[40]->setAdjTile(tiles[12], tiles[13], tiles[16]);
+    intersections[41]->setAdjTile(tiles[13], tiles[16], tiles[17]);
+    intersections[42]->setAdjTile(tiles[13], tiles[14], tiles[17]);
+    intersections[43]->setAdjTile(tiles[14], tiles[17], tiles[18]);
+    intersections[44]->setAdjTile(tiles[14], tiles[15], tiles[18]);
+    intersections[45]->setAdjTile(tiles[15], tiles[18], nullptr);
+    intersections[46]->setAdjTile(tiles[15], nullptr, nullptr);
+
     intersections[47]->setAdjIntersection(intersections[39], intersections[48], nullptr);
     intersections[48]->setAdjIntersection(intersections[47], intersections[49], nullptr);
     intersections[49]->setAdjIntersection(intersections[48], intersections[41], intersections[50]);
@@ -178,20 +219,19 @@ void Board::initIntersections(){
     intersections[51]->setAdjRoad(roads[69], roads[70], roads[64]);
     intersections[52]->setAdjRoad(roads[70], roads[71], nullptr);
     intersections[53]->setAdjRoad(roads[71], nullptr, roads[65]);
+
+    intersections[47]->setAdjTile(tiles[16], nullptr, nullptr);
+    intersections[48]->setAdjTile(tiles[16], nullptr, nullptr);
+    intersections[49]->setAdjTile(tiles[16], tiles[17], nullptr);
+    intersections[50]->setAdjTile(tiles[17], nullptr, nullptr);
+    intersections[51]->setAdjTile(tiles[17], tiles[18], nullptr);
+    intersections[52]->setAdjTile(tiles[18], nullptr, nullptr);
+    intersections[53]->setAdjTile(tiles[18], nullptr, nullptr);
+
 }
 
 
-
 void Board::initRoads(){
-
-// for (size_t i = 0; i < roads.size(); ++i) {
-//     roads[i]->setId(i);
-// }
-// int i = 0;
-// for(Road* road : roads){
-//     road->setId(i);
-//     i++;
-// }
 
     for (size_t i = 0; i < ROADS; ++i) {
         roads[i] = new Road(i);
@@ -287,26 +327,6 @@ void Board::initTiles(){
     for(size_t i = 0; i < TILES; i++){
         tiles[i] = new Tile(i);
     }
-
-    // tiles.push_back(new Tile(ResourceType::ORE, 10));
-    // tiles.push_back(new Tile(ResourceType::SHEEP, 2));
-    // tiles.push_back(new Tile(ResourceType::WOOD, 9));
-    // tiles.push_back(new Tile(ResourceType::WHEAT, 12));
-    // tiles.push_back(new Tile(ResourceType::BRICK, 6));
-    // tiles.push_back(new Tile(ResourceType::SHEEP, 4));
-    // tiles.push_back(new Tile(ResourceType::BRICK, 10));
-    // tiles.push_back(new Tile(ResourceType::WHEAT, 9));
-    // tiles.push_back(new Tile(ResourceType::WOOD, 11));
-    // tiles.push_back(new Tile(ResourceType::DESERT, 0));
-    // tiles.push_back(new Tile(ResourceType::WOOD, 3));
-    // tiles.push_back(new Tile(ResourceType::ORE, 8));
-    // tiles.push_back(new Tile(ResourceType::WOOD, 8));
-    // tiles.push_back(new Tile(ResourceType::ORE, 3));
-    // tiles.push_back(new Tile(ResourceType::WHEAT, 4));
-    // tiles.push_back(new Tile(ResourceType::SHEEP, 5));
-    // tiles.push_back(new Tile(ResourceType::BRICK, 5));
-    // tiles.push_back(new Tile(ResourceType::WHEAT, 6));
-    // tiles.push_back(new Tile(ResourceType::SHEEP, 11));
     
     tiles[0]->setType(ResourceType::ORE);
     tiles[1]->setType(ResourceType::SHEEP);
@@ -348,39 +368,61 @@ void Board::initTiles(){
     tiles[17]->setNumber(6);
     tiles[18]->setNumber(11);
 
-    tiles[0]->setAdjIntersections(intersections[0], intersections[1],intersections[2], intersections[8], intersections[9], intersections[10]);
-    tiles[1]->setAdjIntersections(intersections[2], intersections[3], intersections[4], intersections[10], intersections[11], intersections[12]);
-    tiles[2]->setAdjIntersections(intersections[4], intersections[5], intersections[6], intersections[12], intersections[13], intersections[14]);
-    tiles[3]->setAdjIntersections(intersections[7], intersections[8], intersections[9], intersections[17], intersections[18], intersections[19]);
-    tiles[4]->setAdjIntersections(intersections[9], intersections[10], intersections[11], intersections[19], intersections[20], intersections[21]);
-    tiles[5]->setAdjIntersections(intersections[11], intersections[12], intersections[13], intersections[21], intersections[22], intersections[23]);
-    tiles[6]->setAdjIntersections(intersections[13], intersections[14], intersections[15], intersections[23], intersections[24], intersections[25]);
-    tiles[7]->setAdjIntersections(intersections[16], intersections[17], intersections[18], intersections[27], intersections[28], intersections[29]);
-    tiles[8]->setAdjIntersections(intersections[18], intersections[19], intersections[20], intersections[29], intersections[30], intersections[31]);
-    tiles[9]->setAdjIntersections(intersections[20], intersections[21], intersections[22], intersections[31], intersections[32], intersections[33]);
-    tiles[10]->setAdjIntersections(intersections[22], intersections[23], intersections[24], intersections[33], intersections[34], intersections[35]);
-    tiles[11]->setAdjIntersections(intersections[24], intersections[25], intersections[26], intersections[35], intersections[36], intersections[37]);
-    tiles[12]->setAdjIntersections(intersections[28], intersections[29], intersections[30], intersections[38], intersections[39], intersections[40]);
-    tiles[13]->setAdjIntersections(intersections[30], intersections[31], intersections[32], intersections[40], intersections[41], intersections[42]);
-    tiles[14]->setAdjIntersections(intersections[32], intersections[33], intersections[34], intersections[42], intersections[43], intersections[44]);
-    tiles[15]->setAdjIntersections(intersections[34], intersections[35], intersections[36], intersections[44], intersections[45], intersections[46]);
-    tiles[16]->setAdjIntersections(intersections[39], intersections[40], intersections[41], intersections[47], intersections[48], intersections[49]);
-    tiles[17]->setAdjIntersections(intersections[41], intersections[42], intersections[43], intersections[49], intersections[50], intersections[51]);
-    tiles[18]->setAdjIntersections(intersections[43], intersections[44], intersections[45], intersections[51], intersections[52], intersections[53]);
+    // tiles[0]->setAdjIntersections(intersections[0], intersections[1],intersections[2], intersections[8], intersections[9], intersections[10]);
+    // tiles[1]->setAdjIntersections(intersections[2], intersections[3], intersections[4], intersections[10], intersections[11], intersections[12]);
+    // tiles[2]->setAdjIntersections(intersections[4], intersections[5], intersections[6], intersections[12], intersections[13], intersections[14]);
+    // tiles[3]->setAdjIntersections(intersections[7], intersections[8], intersections[9], intersections[17], intersections[18], intersections[19]);
+    // tiles[4]->setAdjIntersections(intersections[9], intersections[10], intersections[11], intersections[19], intersections[20], intersections[21]);
+    // tiles[5]->setAdjIntersections(intersections[11], intersections[12], intersections[13], intersections[21], intersections[22], intersections[23]);
+    // tiles[6]->setAdjIntersections(intersections[13], intersections[14], intersections[15], intersections[23], intersections[24], intersections[25]);
+    // tiles[7]->setAdjIntersections(intersections[16], intersections[17], intersections[18], intersections[27], intersections[28], intersections[29]);
+    // tiles[8]->setAdjIntersections(intersections[18], intersections[19], intersections[20], intersections[29], intersections[30], intersections[31]);
+    // tiles[9]->setAdjIntersections(intersections[20], intersections[21], intersections[22], intersections[31], intersections[32], intersections[33]);
+    // tiles[10]->setAdjIntersections(intersections[22], intersections[23], intersections[24], intersections[33], intersections[34], intersections[35]);
+    // tiles[11]->setAdjIntersections(intersections[24], intersections[25], intersections[26], intersections[35], intersections[36], intersections[37]);
+    // tiles[12]->setAdjIntersections(intersections[28], intersections[29], intersections[30], intersections[38], intersections[39], intersections[40]);
+    // tiles[13]->setAdjIntersections(intersections[30], intersections[31], intersections[32], intersections[40], intersections[41], intersections[42]);
+    // tiles[14]->setAdjIntersections(intersections[32], intersections[33], intersections[34], intersections[42], intersections[43], intersections[44]);
+    // tiles[15]->setAdjIntersections(intersections[34], intersections[35], intersections[36], intersections[44], intersections[45], intersections[46]);
+    // tiles[16]->setAdjIntersections(intersections[39], intersections[40], intersections[41], intersections[47], intersections[48], intersections[49]);
+    // tiles[17]->setAdjIntersections(intersections[41], intersections[42], intersections[43], intersections[49], intersections[50], intersections[51]);
+    // tiles[18]->setAdjIntersections(intersections[43], intersections[44], intersections[45], intersections[51], intersections[52], intersections[53]);
+
+    tiles[0]->addAdjIntersections(0, 1, 2, 8, 9, 10);
+    tiles[1]->addAdjIntersections(2, 3, 4, 10, 11, 12);
+    tiles[2]->addAdjIntersections(4, 5, 6, 12, 13, 14);
+    tiles[3]->addAdjIntersections(7, 8, 9, 17, 18, 19);
+    tiles[4]->addAdjIntersections(9, 10, 11, 19, 20, 21);
+    tiles[5]->addAdjIntersections(11, 12, 13, 21, 22, 23);
+    tiles[6]->addAdjIntersections(13, 14, 15, 23, 24, 25);
+    tiles[7]->addAdjIntersections(16, 17, 18, 27, 28, 29);
+    tiles[8]->addAdjIntersections(18, 19, 20, 29, 30, 31);
+    tiles[9]->addAdjIntersections(20, 21, 22, 31, 32, 33);
+    tiles[10]->addAdjIntersections(22, 23, 24, 33, 34, 35);
+    tiles[11]->addAdjIntersections(24, 25, 26, 35, 36, 37);
+    tiles[12]->addAdjIntersections(28, 29, 30, 38, 39, 40);
+    tiles[13]->addAdjIntersections(30, 31, 32, 40, 41, 42);
+    tiles[14]->addAdjIntersections(32, 33, 34, 42, 43, 44);
+    tiles[15]->addAdjIntersections(34, 35, 36, 44, 45, 46);
+    tiles[16]->addAdjIntersections(39, 40, 41, 47, 48, 49);
+    tiles[17]->addAdjIntersections(41, 42, 43, 49, 50, 51);
+    tiles[18]->addAdjIntersections(43, 44, 45, 51, 52, 53);
 
 
 }
 
-
 void Board::placeSettelemnt(int interId, string playerName){
     intersections[interId]->setOwner(playerName);
     intersections[interId]->setHasSettlement(true);
-    // for(Tile* tile : intersections[interId]->getAdjTiles()){
-    //     if(tile->getNumber() == 0){
-    //         continue;
-    //     }
-    //     playerName->addTile(tile);
-    // }
+
+}
+
+vector<Tile*> Board::getTilesAdjToSettlement(int interId){
+    if(interId < 0 || interId >= INTERSECTIONS){
+        throw invalid_argument("Invalid intersection id.");
+    }
+    vector<Tile*> adjtiles = intersections[interId]->getAdjTiles();
+    return adjtiles;
 }
 
 bool Board::isValidPlaceForSettlement(int interId, string playerName){

@@ -6,17 +6,12 @@
 using namespace std;
 using namespace ariel;
 
-Player::Player(string name) : name(name), color(Color::NONE), myTurn(false), playedDevCardThisTurn(false){
+Player::Player(string name) : name(name), color(Color::NONE), points(0), knights(0), myTurn(false), playedDevCardThisTurn(false),  settelmentsOnBoard(0), citiesOnBoard(0) {
     resourceCards["wood"] = 0;
     resourceCards["brick"] = 0;
     resourceCards["wheat"] = 0;
     resourceCards["sheep"] = 0;
     resourceCards["ore"] = 0;
-
-    knights = 0;
-    settelmentsOnBoard = 0;
-    citiesOnBoard = 0;
-    points = 0;
 }
 
 // Player::~Player(){
@@ -34,52 +29,63 @@ Player::Player(string name) : name(name), color(Color::NONE), myTurn(false), pla
 
 void Player::placeSettelemnt(int intersectionID, Board& board){
     if(settelmentsOnBoard == 5){
-        cout << "You dont have anymore settelments" << endl;
+        throw invalid_argument("You dont have anymore settelments");
+    }
+    if(board.isValidPlaceForSettlement(intersectionID, this->getName()) == false){
+        throw invalid_argument("Invalid place for settlement");
+    }
+
+    if(board.getIsFirstRound() == true){
+        board.placeSettelemnt(intersectionID, this->getName());
+        addPoints(1);
+        settelmentsOnBoard++;
+        for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
+            if(tile == nullptr){
+                continue;
+            }
+            if(tile->getNumber() != 7){
+                addTile(tile);
+            }
+        }
         return;
     }
     else{
         if(getNumOfWood() < 1 || getNumOfBrick() < 1 || getNumOfWheat() < 1 || getNumOfSheep() < 1){
-            cout << "You dont have enough resources" << endl;
-            return;
+            throw invalid_argument("You dont have enough resources");
         }
-        else{
-            if(board.isValidPlaceForSettlement(intersectionID, this->getName()) == false){
-                cout << "Invalid place for settlement" << endl;
-                return;
+        minusResourceCard("wood", 1);
+        minusResourceCard("brick", 1);
+        minusResourceCard("wheat", 1);
+        minusResourceCard("sheep", 1);
+        board.placeSettelemnt(intersectionID, this->getName());
+        addPoints(1);
+        settelmentsOnBoard++;
+        for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
+            if(tile->getNumber() == 7 || tile == nullptr){
+                continue;
             }
-            if(board.getIsFirstRound() == true){
-                board.placeSettelemnt(intersectionID, this->getName());
-                addPoints(1);
-                settelmentsOnBoard++;
-                return;
-            }
-            minusResourceCard("wood", 1);
-            minusResourceCard("brick", 1);
-            minusResourceCard("wheat", 1);
-            minusResourceCard("sheep", 1);
-            board.placeSettelemnt(intersectionID, this->getName());
-            addPoints(1);
-            settelmentsOnBoard++;
+            addTile(tile);
         }
     }
 }
 
 void Player::placeRoad(int roadID, Board& board){
-    if(getNumOfWood() < 1 || getNumOfBrick() < 1){
-        cout << "You dont have enough resources" << endl;
-        return;
-    }
+
     if(board.isValidPlaceForRoad(roadID, this->getName()) == false){
-        cout << "Invalid place for road" << endl;
-        return;
+        throw invalid_argument("Invalid place for road");
     }
     if(board.getIsFirstRound() == true){
         board.placeRoad(roadID, this->getName());
         return;
     }
-    minusResourceCard("wood", 1);
-    minusResourceCard("brick", 1);
-    board.placeRoad(roadID, this->getName());
+    else{
+        if(getNumOfWood() < 1 || getNumOfBrick() < 1){
+            throw invalid_argument("You dont have enough resources");
+        }
+        minusResourceCard("wood", 1);
+        minusResourceCard("brick", 1);
+        board.placeRoad(roadID, this->getName());
+    }
 }
 
 void Player::buildCity(int intersectionID, Board& board){
@@ -189,13 +195,14 @@ void Player::minusPoint(int amount){
 }
 
 void Player::printResources() { // iterator usage - the iterator is used to iterate over the map to print the resource cards a player has
+    cout << getName() << " has the following resources:" << endl;
     for (auto it = resourceCards.begin(); it != resourceCards.end(); ++it) {
         const string& resource = it->first; // resource name
         int number = it->second; // number of resources
-
-        if (number > 0) {
-            std::cout << getName() << " has " << number << " " << resource << (number > 1 ? "s" : "") << "." << std::endl;
-        }
+        // if (number > 0) {
+        //     std::cout << getName() << " has " << number << " " << resource << (number > 1 ? "s" : "") << "." << std::endl;
+        // }
+        cout << number << " " << resource << endl;
     }
 }
 
@@ -221,12 +228,12 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
         throw invalid_argument("Invalid amount.");
     }
 
-    if(player->resourceCards[resource1] >= amount1 && resourceCards[resource2] >= amount2){
+    if(player->resourceCards[resource1] >= amount1 && this->resourceCards[resource2] >= amount2){
         player->minusResourceCard(resource1, amount1);
         player->addResourceCard(resource2, amount2);
         minusResourceCard(resource2, amount2);
         addResourceCard(resource1, amount1);
-        cout << name << " trades with " << player->getName() << "." << endl;
+        cout << name << " trades " << amount2 << " " << resource2 << " for "<< amount1 << " " << resource1 << " with " <<player->getName() << "." << endl;
     } else {
         throw invalid_argument("Not enough resources.");
     }

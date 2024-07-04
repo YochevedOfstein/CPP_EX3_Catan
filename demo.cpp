@@ -16,12 +16,13 @@ using namespace ariel;
 int main()
 {
 
-
     Player p1("player1");
     Player p2("player2");
     Player p3("player3");
 
     Catan game(p1, p2, p3);
+
+    // Board *board = game.getBoard();
 
     game.ChooseStartingPlayer();
 
@@ -29,17 +30,20 @@ int main()
     game.firstRound(game.getCurrentPlayer(), 35, 37, 19, 25);
     game.firstRound(game.getCurrentPlayer(), 40, 56, 44, 52);
 
-    // if(game.getCurrentPlayer() == &p1){
-    //     game.firstRound(&p1, 0, 0, 1, 1);
-    // }
-    // else if(game.getCurrentPlayer() == &p2){
-    //     game.firstRound(&p2, 0, 0, 1, 1);
-    // }
-    // else{
-    //     game.firstRound(&p3, 0, 0, 1, 1);
-    // }
+    game.playTurn(game.getCurrentPlayer());
 
-    // game.printWinner();
+    game.getCurrentPlayer()->printResources();
+
+    game.getCurrentPlayer()->trade(&p2, "wheat", 1, "brick", 1);
+
+    game.buyDevCard(game.getCurrentPlayer());
+
+
+    // game.getCurrentPlayer()->placeRoad(40, *board);
+    // game.getCurrentPlayer()->placeSettelemnt(42, *board);
+    
+
+    game.printWinner();
 
     return 0;
 

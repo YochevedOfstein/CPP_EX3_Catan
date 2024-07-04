@@ -7,6 +7,8 @@
 #include <map>
 #include "road.hpp"
 #include "resource.hpp"
+#include "tile.hpp"
+
 
 using namespace std;
 
@@ -20,6 +22,7 @@ namespace ariel{
             bool hasCity;
             vector<Intersection*> adjIntersections;
             vector<Road*> adjRoads;
+            vector<Tile*> adjTiles;
             int id;
 
         public:
@@ -37,6 +40,8 @@ namespace ariel{
             vector<Intersection*> getAdjIntersections();
             void setAdjRoad(Road* road1, Road* road2, Road* road3);
             vector<Road*> getAdjRoads();
+            void setAdjTile(Tile* tile1, Tile* tile2, Tile* tile3);
+            vector<Tile*> getAdjTiles();
             void setId(int ID);
             int getId();
         

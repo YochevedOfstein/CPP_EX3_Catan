@@ -21,6 +21,7 @@ using namespace ariel;
 
 Catan::Catan(Player &p1, Player &p2, Player &p3): players{&p1, &p2, &p3}, isFirstRound(true), currentPlayer(nullptr), HasLargestArmy(nullptr), devDeck(DEVELOPMENT_DECK_SIZE){
     board = new Board();
+    initDevDeck();
 
 }
 
@@ -31,12 +32,6 @@ Catan::~Catan(){
     }
     devDeck.clear();
 
-    // for (Player *player : players) {
-    //     delete player;
-    // }
-    // players.clear();
-
-    // delete board;
 }
 
 void Catan::ChooseStartingPlayer(){
@@ -52,6 +47,7 @@ void Catan::ChooseStartingPlayer(){
         }
     }
     currentPlayer = startingPlayer;
+    currentPlayer->myTurn = true;
     setPlayerColors();
     cout << startingPlayer->getName() << " goes first!" << endl;
 }
@@ -76,12 +72,15 @@ void Catan::firstRound(Player *player, int intersectionID1, int road1, int inter
         player->placeSettelemnt(intersectionID2, *board);
         player->placeRoad(road2, *board);
         for(Tile* tile : player->getTiles()){
-            for(Intersection* intersection : tile->getAdjIntersections()){
-                if(intersection->getId() == intersectionID2){
+            vector<int> tileAdjIntersections = tile->getAdjIntersections();
+            for(int inter : tileAdjIntersections){
+                if(inter == intersectionID2){
                     player->addResourceCard(tile->getType(), 1);
                 }
             }
         }
+        cout << player->getName() << " placed 2 settlement on intersections: "<< intersectionID1 << ", "<< intersectionID2 << endl;
+        cout << player->getName() << " placed 2 roads on roads: "<< road1 << ", "<< road2 << endl;
         int count = 0;
         for(Player *p : players){
             if(p->settelmentsOnBoard == 2){
@@ -91,11 +90,9 @@ void Catan::firstRound(Player *player, int intersectionID1, int road1, int inter
         if(count == 3){
             isFirstRound = false;
             board->setIsFirstRound(false);
-    }
+            cout << "First round is over." << endl;
+        }
     nextTurn();
-    }
-    else{
-        cout << "First round is over." << endl;
     }
 }
 
@@ -105,6 +102,7 @@ Board* Catan::getBoard(){
 
 
 void Catan::printWinner(){
+    
     int highest = 0;
     Player *winner = nullptr;
     for (Player *player : players) {
@@ -113,7 +111,12 @@ void Catan::printWinner(){
             winner = player;
         }
     }
+    if(highest >= WINNING_POINTS){
         cout << winner->getName() << " wins!" << endl;
+    }
+    else{
+        cout << "No winner yet." << endl;
+    }
 }
 
 bool Catan::isThereAWinner(){
@@ -149,23 +152,28 @@ void Catan::nextTurn(){
             currentPlayer = players[index + 1];
         }
     }
-    cout << currentPlayer->getName() << "'s turn!" << endl;
+    if(!isFirstRound){
+        cout << currentPlayer->getName() << " it's your turn." << endl;
+    }
 }
 
 
 void Catan::playTurn(Player *player){
     if(isFirstRound){
-        cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
-        return;
+        throw invalid_argument("First round is not over, every player must choose 2 settlements and 2 roads");
     }
     if(player != currentPlayer){
         throw invalid_argument(player->getName() + " - It's not your turn.");
     }
+    player->myTurn = true;
     int dice = currentPlayer->rollDice();
-    for(Player *player : players){
-        for(Tile *tile : player->getTiles()){
+    cout << currentPlayer->getName() << " rolled a " << dice << endl;
+    for(Player *p : players){
+        for(Tile *tile : p->getTiles()){
             if(tile->getNumber() == dice){
-                player->addResourceCard(tile->getType(), 1);
+                if(tile->getType() != "desert"){
+                p->addResourceCard(tile->getType(), 1);
+                }
             }
         }
     }
@@ -173,7 +181,7 @@ void Catan::playTurn(Player *player){
     if(isThereAWinner()){
         printWinner();
     }
-    if(!player->myTurn){
+    if(!(player->myTurn)){
         nextTurn();
     }
 }
@@ -212,13 +220,19 @@ void Catan::buyDevCard(Player *player){
         cout << player->getName() << " It's not your turn." << endl;
         return;
     }
+    cout<< "problem 1"<<endl;
     if(devDeck.size() == 0){
         cout << "No more development cards." << endl;
         return;
     }
+    cout<< "problem 2"<<endl;
     DevelopmentCard* card = devDeck.back();
+    cout<< "problem 3"<<endl;
     devDeck.pop_back();
+    cout<< "problem 4"<<endl;
     player->buyDevelopmentCard(card);
+    cout<< "problem 5"<<endl;
+    cout << player->getName() << " bought a development card." << endl;
 }
 
 void Catan::checkLargestArmy(){
@@ -230,12 +244,23 @@ void Catan::checkLargestArmy(){
             player = p;
         }
     }
-    if(player->getKnights() >= MIN_LARGEST_ARMY_SIZE){
-        if(HasLargestArmy != nullptr){
-            HasLargestArmy->minusPoint(2);
+
+    if(highest == MIN_LARGEST_ARMY_SIZE || highest > MIN_LARGEST_ARMY_SIZE){
+        if(HasLargestArmy == nullptr){
+            player->addPoints(2);
+            HasLargestArmy = player;
+            return;
         }
-        player->addPoints(2);
-        HasLargestArmy = player;
+        else{
+            if(player == HasLargestArmy){
+                return;
+            }
+            else{
+                HasLargestArmy->minusPoint(2);
+                player->addPoints(2);
+                HasLargestArmy = player;
+            }
+        }
     }
 }
 

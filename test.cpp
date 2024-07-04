@@ -382,51 +382,6 @@ TEST_CASE("Road class"){
         }
 }
 
-// TEST_CASE("Tile class"){
-
-//     ariel::Tile t1(ariel::ResourceType::NONE, -1);
-
-//     CHECK(t1.getType() == "None");
-//     CHECK(t1.getNumber() == -1);
-
-//     SUBCASE("Tile type and number"){
-
-//         ariel::Tile t2(ariel::ResourceType::ORE, 10);
-
-//         CHECK(t2.getType() == "ore");
-//         CHECK(t2.getNumber() == 10);
-
-//         CHECK_THROWS_AS(t2.setNumber(1), invalid_argument);
-//         CHECK_THROWS_AS(t2.setType(ariel::ResourceType::NONE), invalid_argument);
-
-//         t1.setType(ariel::ResourceType::WOOD);
-
-//         CHECK(t1.getType() == "wood");
-//     }
-
-//     SUBCASE("Tile adjacent Intersections"){
-
-//         ariel::Intersection i1(1);
-//         ariel::Intersection i2(2);
-//         ariel::Intersection i3(3);
-//         ariel::Intersection i4(4);
-//         ariel::Intersection i5(5);
-//         ariel::Intersection i6(6);
-
-//         t1.setAdjIntersections(&i1, &i2, &i3, &i4, &i5, &i6);
-
-//         auto adjIntersections = t1.getAdjIntersections();
-
-//         CHECK(adjIntersections[0]->getId() == i1.getId());
-//         CHECK(adjIntersections[1]->getId() == i2.getId());
-//         CHECK(adjIntersections[2]->getId() == i3.getId());
-//         CHECK(adjIntersections[3]->getId() == i4.getId());
-//         CHECK(adjIntersections[4]->getId() == i5.getId());
-//         CHECK(adjIntersections[5]->getId() == i6.getId());
-
-//     }
-// }
-
 TEST_CASE("Tile class"){
 
     ariel::Tile t1(1);
@@ -463,16 +418,21 @@ TEST_CASE("Tile class"){
         ariel::Intersection i5(5);
         ariel::Intersection i6(6);
 
-        t1.setAdjIntersections(&i1, &i2, &i3, &i4, &i5, &i6);
+        t1.addAdjIntersections(1, 2, 3, 4, 5, 6);
+
+        vector<int> testadjIntersections = {1, 2, 3, 4, 5, 6};
 
         auto adjIntersections = t1.getAdjIntersections();
 
-        CHECK(adjIntersections[0]->getId() == i1.getId());
-        CHECK(adjIntersections[1]->getId() == i2.getId());
-        CHECK(adjIntersections[2]->getId() == i3.getId());
-        CHECK(adjIntersections[3]->getId() == i4.getId());
-        CHECK(adjIntersections[4]->getId() == i5.getId());
-        CHECK(adjIntersections[5]->getId() == i6.getId());
+        CHECK(testadjIntersections.size() == adjIntersections.size());
+        CHECK(testadjIntersections == adjIntersections);
+
+        CHECK(adjIntersections[0] == i1.getId());
+        CHECK(adjIntersections[1] == i2.getId());
+        CHECK(adjIntersections[2] == i3.getId());
+        CHECK(adjIntersections[3] == i4.getId());
+        CHECK(adjIntersections[4] == i5.getId());
+        CHECK(adjIntersections[5] == i6.getId());
     }
 }
 
@@ -497,4 +457,21 @@ TEST_CASE("Development Card class"){
     }
 
 }
+
+TEST_CASE("Catan class"){
+
+    ariel::Player p1("Charlie");
+    ariel::Player p2("Bob");
+    ariel::Player p3("Alice");
+        
+    ariel::Catan catan(p1, p2, p3);
+
+    SUBCASE(""){
+
+    }
+    
+}
+
+    
+
 

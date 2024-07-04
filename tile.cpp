@@ -8,9 +8,7 @@ using namespace ariel;
 
 Tile::Tile(): resource(ResourceType::NONE), number(-1){}
 
-// Tile::Tile(ResourceType type, int number): resource(type),adjIntersections(6, nullptr), number(number){}
-
-Tile::Tile(int ID): resource(ResourceType::NONE), adjIntersections(6, nullptr), number(-1), id(ID){}
+Tile::Tile(int ID): resource(ResourceType::NONE), adjIntersections(6, -1), number(-1), id(ID){}
 
 // Tile::~Tile(){
 
@@ -46,19 +44,40 @@ void Tile::setNumber(int number){
     this->number = number;
 }
 
-void Tile::setAdjIntersections(Intersection* intersection1, Intersection* intersection2, Intersection* intersection3, Intersection* intersection4, Intersection* intersection5, Intersection* intersection6){
+void Tile::addAdjIntersections(int intersection1, int intersection2, int intersection3, int intersection4, int intersection5, int intersection6){
+    if(intersection1 < 0 || intersection2 < 0 || intersection3 < 0 || intersection4 < 0 || intersection5 < 0 || intersection6 < 0){
+        throw invalid_argument("Intersection ID cannot be negative");
+    }
+
     this->adjIntersections[0] = intersection1;
     this->adjIntersections[1] = intersection2;
     this->adjIntersections[2] = intersection3;
     this->adjIntersections[3] = intersection4;
     this->adjIntersections[4] = intersection5;
     this->adjIntersections[5] = intersection6;
+
 }
 
-
-vector<Intersection*> Tile::getAdjIntersections(){
+vector<int> Tile::getAdjIntersections(){
+    if(this->adjIntersections.empty()){
+        throw invalid_argument("No adjacent intersections");
+    }
     return this->adjIntersections;
 }
+
+// void Tile::setAdjIntersections(Intersection* intersection1, Intersection* intersection2, Intersection* intersection3, Intersection* intersection4, Intersection* intersection5, Intersection* intersection6){
+//     this->adjIntersections[0] = intersection1;
+//     this->adjIntersections[1] = intersection2;
+//     this->adjIntersections[2] = intersection3;
+//     this->adjIntersections[3] = intersection4;
+//     this->adjIntersections[4] = intersection5;
+//     this->adjIntersections[5] = intersection6;
+// }
+
+
+// vector<Intersection*> Tile::getAdjIntersections(){
+//     return this->adjIntersections;
+// }
 
 void Tile::setId(int ID){
     if(this->id != -1){
