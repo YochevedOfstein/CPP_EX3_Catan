@@ -294,39 +294,42 @@ TEST_CASE("Intersection class"){
 
         i1.setAdjIntersection(&i2, &i3, &i4);
 
-        // CHECK(i1.getAdjIntersections()[0]->getId() == i2.getId());
-        // CHECK(i1.getAdjIntersections()[1]->getId() == 3);
-        // CHECK(i1.getAdjIntersections()[2]->getId() == 2);
-
-        // ariel::Intersection i5(5);
-        // ariel::Intersection i6(6);
-        // ariel::Intersection i7(7);
-
-        // CHECK_THROWS_AS(i1.setAdjIntersection(&i5, &i6, &i7), invalid_argument);
+        CHECK(i1.getAdjIntersections()[0]->getId() == i2.getId());
+        CHECK(i1.getAdjIntersections()[1]->getId() == i3.getId());
+        CHECK(i1.getAdjIntersections()[2]->getId() == i4.getId());
 
     }
 
-    // SUBCASE("Adjacent Roads"){
+    SUBCASE("Adjacent Roads"){
 
-    //     ariel::Road r1(1);
-    //     ariel::Road r2(2);
-    //     ariel::Road r3(3);
+        ariel::Road r1(1);
+        ariel::Road r2(2);
+        ariel::Road r3(3);
 
-    //     i1.setAdjRoad(&r1, &r2, &r3);
+        i1.setAdjRoad(&r1, &r2, &r3);
 
-    //     auto adjRoads = i1.getAdjRoads();
+        auto adjRoads = i1.getAdjRoads();
 
-    //     CHECK(adjRoads[0]->getId() == 1);
-    //     CHECK(adjRoads[1]->getId() == 2);
-    //     CHECK(adjRoads[2]->getId() == 3);
+        CHECK(adjRoads[0]->getId() == r1.getId());
+        CHECK(adjRoads[1]->getId() == r2.getId());
+        CHECK(adjRoads[2]->getId() == r3.getId());
+    }
 
-    //     ariel::Road r4(4);
-    //     ariel::Road r5(5);
-    //     ariel::Road r6(6);
+    SUBCASE("Adjacent Tiles"){
 
-    //     CHECK_THROWS_AS(i1.setAdjRoad(&r4, &r5, &r6), invalid_argument);
+        ariel::Tile t1(1);
+        ariel::Tile t2(2);
+        ariel::Tile t3(3);
 
-    // }
+        i1.setAdjTile(&t1, &t2, &t3);
+
+        auto adjTiles = i1.getAdjTiles();
+
+        CHECK(adjTiles[0]->getId() == t1.getId());
+        CHECK(adjTiles[1]->getId() == t2.getId());
+        CHECK(adjTiles[2]->getId() == t3.getId());
+
+    }
 
 }
 

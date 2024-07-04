@@ -69,9 +69,7 @@ bool Intersection::getHasCity(){
 }
 
 void Intersection::setAdjIntersection(Intersection* intersection1, Intersection* intersection2, Intersection* intersection3){
-    // if(this->adjIntersections.size() > 0){
-    //     throw invalid_argument("Cannot change adjacent intersections");
-    // }
+
     this->adjIntersections[0] = intersection1;
     this->adjIntersections[1] = intersection2;
     this->adjIntersections[2] = intersection3;

@@ -72,7 +72,7 @@ namespace ariel{
             void setColor(Color color);
             string colorToString(Color color);
             void printStatus();
-            void buyDevelopmentCard(DevelopmentCard* card);
+            bool buyDevelopmentCard(DevelopmentCard* card);
             bool canPlayDevelopmentCard(CardType type);
             vector<DevelopmentCard*> getDevelopmentCards();
 

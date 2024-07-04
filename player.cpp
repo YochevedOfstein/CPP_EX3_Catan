@@ -29,11 +29,13 @@ Player::Player(string name) : name(name), color(Color::NONE), points(0), knights
 
 void Player::placeSettelemnt(int intersectionID, Board& board){
     if(settelmentsOnBoard == 5){
-        throw invalid_argument("You dont have anymore settelments");
+        cout << getName() << " doesn't have anymore settelments to put on the board" << endl;
+        return;
     }
     if(board.isValidPlaceForSettlement(intersectionID, this->getName()) == false){
-        throw invalid_argument("Invalid place for settlement");
-    }
+        cout << "Invalid place for settlement" << endl;
+        return;
+        }
 
     if(board.getIsFirstRound() == true){
         board.placeSettelemnt(intersectionID, this->getName());
@@ -51,7 +53,8 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
     }
     else{
         if(getNumOfWood() < 1 || getNumOfBrick() < 1 || getNumOfWheat() < 1 || getNumOfSheep() < 1){
-            throw invalid_argument("You dont have enough resources");
+            cout << getName() << " doesn't have enough resources to build a settelment" << endl;
+            return;
         }
         minusResourceCard("wood", 1);
         minusResourceCard("brick", 1);
@@ -72,7 +75,8 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
 void Player::placeRoad(int roadID, Board& board){
 
     if(board.isValidPlaceForRoad(roadID, this->getName()) == false){
-        throw invalid_argument("Invalid place for road");
+        cout << "Invalid place for road" << endl;  
+        return; 
     }
     if(board.getIsFirstRound() == true){
         board.placeRoad(roadID, this->getName());
@@ -80,22 +84,24 @@ void Player::placeRoad(int roadID, Board& board){
     }
     else{
         if(getNumOfWood() < 1 || getNumOfBrick() < 1){
-            throw invalid_argument("You dont have enough resources");
+            cout << getName() << " doesn't have enough resources to build road" << endl;
+            return;
         }
         minusResourceCard("wood", 1);
         minusResourceCard("brick", 1);
         board.placeRoad(roadID, this->getName());
+        cout << name << " placed a road on road number " << roadID << endl;
     }
 }
 
 void Player::buildCity(int intersectionID, Board& board){
     if(citiesOnBoard == 4){
-        cout << "You dont have anymore cities" << endl;
+        cout << getName() << " doesn't have anymore cities" << endl;
         return;
     }
     else{
         if(getNumOfWheat() < 2 || getNumOfOre() < 3){
-            cout << "You dont have enough resources" << endl;
+            cout << getName() << " doesn't have enough resources to build a city" << endl;
             return;
         }
         else{
@@ -109,20 +115,17 @@ void Player::buildCity(int intersectionID, Board& board){
     }
 }
 
-void Player::buyDevelopmentCard(DevelopmentCard* card){
+bool Player::buyDevelopmentCard(DevelopmentCard* card){
     if(resourceCards["ore"] < 1 || resourceCards["sheep"] < 1 || resourceCards["wheat"] < 1){
-        cout << "You dont have enough resources" << endl;
-        return;
+        cout << getName() << " doesn't have enough resources to buy a development card" << endl;
+        return false;
     }
     minusResourceCard("ore", 1);
     minusResourceCard("sheep", 1);
     minusResourceCard("wheat", 1);
     developmentCards.push_back(card);
     card->changeStatusOfTurn(true);
-    // if(card->getType() == CardType::VictoryPoint){
-    //    devcardVictoryPoints++; 
-    // }
-    cout << name << " buys a development card." << endl;
+    return true;
 }
 
 bool Player::canPlayDevelopmentCard(CardType type){
@@ -153,11 +156,11 @@ bool Player::canPlayDevelopmentCard(CardType type){
 }
 
 void Player::printNumSettelments(){
-    cout << name << " has " << settelmentsOnBoard << " settelments." << endl;
+    cout << settelmentsOnBoard << " settelments." << endl;
 }
 
 void Player::printNumCities(){
-    cout << name << " has " << citiesOnBoard << " cities." << endl;
+    cout <<  citiesOnBoard << " cities." << endl;
 }
 
 int Player::rollDice(){
@@ -170,7 +173,7 @@ int Player::rollDice(){
 }
 
 void Player::printPoints(){
-    cout << name << " has " << points << " points." << endl;
+    cout << points << " points." << endl;
 }
 
 int Player::getPoints(){
@@ -199,10 +202,9 @@ void Player::printResources() { // iterator usage - the iterator is used to iter
     for (auto it = resourceCards.begin(); it != resourceCards.end(); ++it) {
         const string& resource = it->first; // resource name
         int number = it->second; // number of resources
-        // if (number > 0) {
-        //     std::cout << getName() << " has " << number << " " << resource << (number > 1 ? "s" : "") << "." << std::endl;
-        // }
-        cout << number << " " << resource << endl;
+        if (number > 0) {
+            cout << number << " " << resource << endl;
+        }
     }
 }
 
@@ -225,7 +227,8 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
         throw invalid_argument("You can't trade with yourself.");
     }
     if(amount1 < 0 || amount2 < 0){
-        throw invalid_argument("Invalid amount.");
+        cout << "Invalid amount." << endl;
+        return;
     }
 
     if(player->resourceCards[resource1] >= amount1 && this->resourceCards[resource2] >= amount2){
@@ -235,7 +238,8 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
         addResourceCard(resource1, amount1);
         cout << name << " trades " << amount2 << " " << resource2 << " for "<< amount1 << " " << resource1 << " with " <<player->getName() << "." << endl;
     } else {
-        throw invalid_argument("Not enough resources.");
+        cout << "Not enough resources to trade." << endl;
+        return;
     }
 }
 
@@ -292,7 +296,7 @@ int Player::getKnights(){
 }
 
 void Player::printNumKnights(){
-    cout << name << " has " << knights << " knights." << endl;
+    cout << knights << " knights." << endl;
 }
 
 Color Player::getColor(){
@@ -317,6 +321,7 @@ string Player::colorToString(Color color){
 }
 
 void Player::printStatus(){
+    cout << getName() <<  " status:" << endl;
     printPoints();
     printNumSettelments();
     printNumCities();

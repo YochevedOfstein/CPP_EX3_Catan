@@ -502,6 +502,7 @@ bool Board::isValidPlaceForRoad(int roadId, string playerName){
 
 void Board::buildCity(int intersectionId, string playerName){
     if(intersections[intersectionId]->getOwner() != playerName){
+        cout << playerName << " You don't own this intersection - can't build city." << endl;
         throw invalid_argument("You don't own this intersection.");
     }
     intersections[intersectionId]->setHasCity(true);

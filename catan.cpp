@@ -61,10 +61,12 @@ void Catan::setPlayerColors(){
 void Catan::firstRound(Player *player, int intersectionID1, int road1, int intersectionID2, int road2){
 
     if(player != currentPlayer){
-        throw invalid_argument(player->getName() + " - It's not your turn.");
+        cout << player->getName() << " - It's not your turn." << endl;
+        return;
     }
     if(player->settelmentsOnBoard == 2){
-        throw invalid_argument(player->getName() + " already placed 2 settlements and 2 roads.");
+        cout << player->getName() << " already placed 2 settlements and 2 roads." << endl;
+        return;
     }
     if(isFirstRound){
         player->placeSettelemnt(intersectionID1, *board);
@@ -160,10 +162,15 @@ void Catan::nextTurn(){
 
 void Catan::playTurn(Player *player){
     if(isFirstRound){
-        throw invalid_argument("First round is not over, every player must choose 2 settlements and 2 roads");
+        cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
+        return;
+    }
+    if(!currentPlayer->myTurn){
+        nextTurn();
     }
     if(player != currentPlayer){
-        throw invalid_argument(player->getName() + " - It's not your turn.");
+        cout << player->getName() << " - It's not your turn." << endl;
+        return;
     }
     player->myTurn = true;
     int dice = currentPlayer->rollDice();
@@ -220,19 +227,16 @@ void Catan::buyDevCard(Player *player){
         cout << player->getName() << " It's not your turn." << endl;
         return;
     }
-    cout<< "problem 1"<<endl;
     if(devDeck.size() == 0){
         cout << "No more development cards." << endl;
         return;
     }
-    cout<< "problem 2"<<endl;
     DevelopmentCard* card = devDeck.back();
-    cout<< "problem 3"<<endl;
-    devDeck.pop_back();
-    cout<< "problem 4"<<endl;
-    player->buyDevelopmentCard(card);
-    cout<< "problem 5"<<endl;
-    cout << player->getName() << " bought a development card." << endl;
+    if(player->buyDevelopmentCard(card)){
+        devDeck.pop_back();
+        cout << player->getName() << " bought a development card." << endl;
+    }  
+    
 }
 
 void Catan::checkLargestArmy(){

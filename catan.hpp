@@ -49,13 +49,6 @@ namespace ariel{
             void printWinner();
             bool isThereAWinner();
 
-
-
-
-            
-            
-
-
     };
     
 }
