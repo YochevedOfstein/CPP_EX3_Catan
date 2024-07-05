@@ -28,6 +28,10 @@ Player::Player(string name) : name(name), color(Color::NONE), points(0), knights
 // }
 
 void Player::placeSettelemnt(int intersectionID, Board& board){
+    if(!myTurn){
+        cout << getName() << " It's not your turn." << endl;
+        return;
+    }
     if(settelmentsOnBoard == 5){
         cout << getName() << " doesn't have anymore settelments to put on the board" << endl;
         return;
@@ -42,12 +46,10 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         addPoints(1);
         settelmentsOnBoard++;
         for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
-            if(tile == nullptr){
+            if(tile == nullptr || tile->getNumber() == 7){
                 continue;
             }
-            if(tile->getNumber() != 7){
-                addTile(tile);
-            }
+            addTile(tile);
         }
         return;
     }
@@ -63,8 +65,11 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         board.placeSettelemnt(intersectionID, this->getName());
         addPoints(1);
         settelmentsOnBoard++;
+        cout << name << " placed a settelment on intersection number " << intersectionID << endl;
         for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
-            if(tile->getNumber() == 7 || tile == nullptr){
+            cout <<"problem1"<< endl;
+            if(tile == nullptr || tile->getNumber() == 7){
+                cout <<"problem2"<< endl;
                 continue;
             }
             addTile(tile);
@@ -74,6 +79,10 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
 
 void Player::placeRoad(int roadID, Board& board){
 
+    if(!myTurn){
+        cout << getName() << " It's not your turn." << endl;
+        return;
+    }
     if(board.isValidPlaceForRoad(roadID, this->getName()) == false){
         cout << "Invalid place for road" << endl;  
         return; 
@@ -95,6 +104,10 @@ void Player::placeRoad(int roadID, Board& board){
 }
 
 void Player::buildCity(int intersectionID, Board& board){
+    if(!myTurn){
+        cout << getName() << " It's not your turn." << endl;
+        return;
+    }
     if(citiesOnBoard == 4){
         cout << getName() << " doesn't have anymore cities" << endl;
         return;
@@ -111,6 +124,7 @@ void Player::buildCity(int intersectionID, Board& board){
             settelmentsOnBoard--;
             addPoints(1);
             citiesOnBoard++;
+            cout << name << " built a city on intersection number " << intersectionID << endl;
         }
     }
 }
@@ -156,11 +170,15 @@ bool Player::canPlayDevelopmentCard(CardType type){
 }
 
 void Player::printNumSettelments(){
-    cout << settelmentsOnBoard << " settelments." << endl;
+    if(settelmentsOnBoard > 0){
+        cout << settelmentsOnBoard << " settelments." << endl;  
+    }
 }
 
 void Player::printNumCities(){
+    if(citiesOnBoard > 0){
     cout <<  citiesOnBoard << " cities." << endl;
+    }
 }
 
 int Player::rollDice(){
@@ -173,7 +191,9 @@ int Player::rollDice(){
 }
 
 void Player::printPoints(){
+    if(points > 0){
     cout << points << " points." << endl;
+    }
 }
 
 int Player::getPoints(){
@@ -202,9 +222,7 @@ void Player::printResources() { // iterator usage - the iterator is used to iter
     for (auto it = resourceCards.begin(); it != resourceCards.end(); ++it) {
         const string& resource = it->first; // resource name
         int number = it->second; // number of resources
-        if (number > 0) {
-            cout << number << " " << resource << endl;
-        }
+        cout << number << " " << resource << endl;
     }
 }
 
@@ -296,7 +314,9 @@ int Player::getKnights(){
 }
 
 void Player::printNumKnights(){
+    if(knights > 0){
     cout << knights << " knights." << endl;
+    }
 }
 
 Color Player::getColor(){
@@ -326,6 +346,7 @@ void Player::printStatus(){
     printNumSettelments();
     printNumCities();
     printNumKnights();
+    printDevelopmentCards();
     printResources();
 }
 
@@ -355,6 +376,12 @@ map<string, int> Player::getResources(){
 
 vector<DevelopmentCard*> Player::getDevelopmentCards(){
     return developmentCards;
+}
+
+void Player::printDevelopmentCards(){
+    if(!developmentCards.empty()){
+        cout << getName() << " has " << developmentCards.size() << " development cards" << endl;
+    }
 }
 
 

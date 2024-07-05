@@ -421,8 +421,14 @@ vector<Tile*> Board::getTilesAdjToSettlement(int interId){
     if(interId < 0 || interId >= INTERSECTIONS){
         throw invalid_argument("Invalid intersection id.");
     }
-    vector<Tile*> adjtiles = intersections[interId]->getAdjTiles();
-    return adjtiles;
+    // vector<Tile*> theAdjtiles;
+    // for(Tile* tile : intersections[interId]->getAdjTiles()){
+    //     cout << tile->getNumber() << " tile id" << endl;
+    //     theAdjtiles.push_back(tile);
+    // }
+    
+    vector<Tile*> theAdjtiles = intersections[interId]->getAdjTiles();
+    return theAdjtiles;
 }
 
 bool Board::isValidPlaceForSettlement(int interId, string playerName){

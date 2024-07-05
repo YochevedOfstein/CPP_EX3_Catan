@@ -75,6 +75,7 @@ namespace ariel{
             bool buyDevelopmentCard(DevelopmentCard* card);
             bool canPlayDevelopmentCard(CardType type);
             vector<DevelopmentCard*> getDevelopmentCards();
+            void printDevelopmentCards();
 
 
     }; 

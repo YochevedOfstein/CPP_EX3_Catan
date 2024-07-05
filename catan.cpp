@@ -150,8 +150,10 @@ void Catan::nextTurn(){
         }
         if (index == players.size() - 1) {
             currentPlayer = players[0];
+            players[0]->myTurn = true;
         } else {
             currentPlayer = players[index + 1];
+            players[index + 1]->myTurn = true;
         }
     }
     if(!isFirstRound){
