@@ -47,7 +47,7 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         settelmentsOnBoard++;
         for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
             if(tile == nullptr || tile->getNumber() == 7){
-                continue;
+                break;
             }
             addTile(tile);
         }
@@ -67,10 +67,8 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         settelmentsOnBoard++;
         cout << name << " placed a settelment on intersection number " << intersectionID << endl;
         for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
-            cout <<"problem1"<< endl;
             if(tile == nullptr || tile->getNumber() == 7){
-                cout <<"problem2"<< endl;
-                continue;
+                break;
             }
             addTile(tile);
         }
@@ -84,7 +82,6 @@ void Player::placeRoad(int roadID, Board& board){
         return;
     }
     if(board.isValidPlaceForRoad(roadID, this->getName()) == false){
-        cout << "Invalid place for road" << endl;  
         return; 
     }
     if(board.getIsFirstRound() == true){
@@ -261,7 +258,19 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
     }
 }
 
-
+void Player::tradeFourForOne(string resource1, string resource2){
+    if(!myTurn){
+        cout << getName() << " It's not your turn." << endl;
+        return;
+    }
+    if(resourceCards[resource1] < 4){
+        cout << getName() << " doesn't have enough resources to trade." << endl;
+        return;
+    }
+    minusResourceCard(resource1, 4);
+    addResourceCard(resource2, 1);
+    cout << name << " trades 4 " << resource1 << " for 1 " << resource2 << endl;
+}
 
 string Player::getName(){
     return name;

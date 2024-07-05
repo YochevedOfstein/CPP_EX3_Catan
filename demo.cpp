@@ -138,6 +138,44 @@ int main()
 
     p2.endTurn();
 
+    game.playTurn(&p3);
+
+    p3.printResources();
+
+    p3.trade(&p2, "wheat", 1, "sheep", 1);
+
+    p3.placeRoad(45, *game.getBoard());
+
+    p3.endTurn();
+
+    /////////////////////////////////////////////////////next Round///////////////////////////////////////////////////////////////
+
+    game.playTurn(&p1);
+
+    p1.printStatus();
+
+    p1.placeRoad(14, *game.getBoard());
+
+    p1.endTurn();
+
+    game.playTurn(&p2);
+
+    p2.endTurn();
+
+    game.playTurn(&p3);
+
+    p3.printResources();
+
+    p3.tradeFourForOne("sheep", "wheat");
+
+    p3.printResources();
+
+    game.buyDevCard(&p3);
+
+    game.playKnightDevCard(&p3);
+
+    p3.endTurn();
+
     return 0;
 
 }

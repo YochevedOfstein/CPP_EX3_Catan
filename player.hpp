@@ -76,6 +76,7 @@ namespace ariel{
             bool canPlayDevelopmentCard(CardType type);
             vector<DevelopmentCard*> getDevelopmentCards();
             void printDevelopmentCards();
+            void tradeFourForOne(string resource1, string resource2);
 
 
     }; 
