@@ -18,7 +18,6 @@ namespace ariel{
         private:
             vector<Player*> players;
             Board *board;
-            bool isFirstRound;
             Player *currentPlayer;
             Player *HasLargestArmy;
 
@@ -27,6 +26,7 @@ namespace ariel{
             Catan(Player &p1, Player &p2, Player &p3);
             ~Catan();
             vector<DevelopmentCard*> devDeck;
+            bool isFirstRound;
 
             void ChooseStartingPlayer();
             void setPlayerColors();

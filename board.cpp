@@ -368,26 +368,6 @@ void Board::initTiles(){
     tiles[17]->setNumber(6);
     tiles[18]->setNumber(11);
 
-    // tiles[0]->setAdjIntersections(intersections[0], intersections[1],intersections[2], intersections[8], intersections[9], intersections[10]);
-    // tiles[1]->setAdjIntersections(intersections[2], intersections[3], intersections[4], intersections[10], intersections[11], intersections[12]);
-    // tiles[2]->setAdjIntersections(intersections[4], intersections[5], intersections[6], intersections[12], intersections[13], intersections[14]);
-    // tiles[3]->setAdjIntersections(intersections[7], intersections[8], intersections[9], intersections[17], intersections[18], intersections[19]);
-    // tiles[4]->setAdjIntersections(intersections[9], intersections[10], intersections[11], intersections[19], intersections[20], intersections[21]);
-    // tiles[5]->setAdjIntersections(intersections[11], intersections[12], intersections[13], intersections[21], intersections[22], intersections[23]);
-    // tiles[6]->setAdjIntersections(intersections[13], intersections[14], intersections[15], intersections[23], intersections[24], intersections[25]);
-    // tiles[7]->setAdjIntersections(intersections[16], intersections[17], intersections[18], intersections[27], intersections[28], intersections[29]);
-    // tiles[8]->setAdjIntersections(intersections[18], intersections[19], intersections[20], intersections[29], intersections[30], intersections[31]);
-    // tiles[9]->setAdjIntersections(intersections[20], intersections[21], intersections[22], intersections[31], intersections[32], intersections[33]);
-    // tiles[10]->setAdjIntersections(intersections[22], intersections[23], intersections[24], intersections[33], intersections[34], intersections[35]);
-    // tiles[11]->setAdjIntersections(intersections[24], intersections[25], intersections[26], intersections[35], intersections[36], intersections[37]);
-    // tiles[12]->setAdjIntersections(intersections[28], intersections[29], intersections[30], intersections[38], intersections[39], intersections[40]);
-    // tiles[13]->setAdjIntersections(intersections[30], intersections[31], intersections[32], intersections[40], intersections[41], intersections[42]);
-    // tiles[14]->setAdjIntersections(intersections[32], intersections[33], intersections[34], intersections[42], intersections[43], intersections[44]);
-    // tiles[15]->setAdjIntersections(intersections[34], intersections[35], intersections[36], intersections[44], intersections[45], intersections[46]);
-    // tiles[16]->setAdjIntersections(intersections[39], intersections[40], intersections[41], intersections[47], intersections[48], intersections[49]);
-    // tiles[17]->setAdjIntersections(intersections[41], intersections[42], intersections[43], intersections[49], intersections[50], intersections[51]);
-    // tiles[18]->setAdjIntersections(intersections[43], intersections[44], intersections[45], intersections[51], intersections[52], intersections[53]);
-
     tiles[0]->addAdjIntersections(0, 1, 2, 8, 9, 10);
     tiles[1]->addAdjIntersections(2, 3, 4, 10, 11, 12);
     tiles[2]->addAdjIntersections(4, 5, 6, 12, 13, 14);
@@ -421,11 +401,6 @@ vector<Tile*> Board::getTilesAdjToSettlement(int interId){
     if(interId < 0 || interId >= INTERSECTIONS){
         throw invalid_argument("Invalid intersection id.");
     }
-    // vector<Tile*> theAdjtiles;
-    // for(Tile* tile : intersections[interId]->getAdjTiles()){
-    //     cout << tile->getNumber() << " tile id" << endl;
-    //     theAdjtiles.push_back(tile);
-    // }
     
     vector<Tile*> theAdjtiles = intersections[interId]->getAdjTiles();
     return theAdjtiles;
@@ -484,23 +459,30 @@ bool Board::isValidPlaceForRoad(int roadId, string playerName){
     bool hasAdjacentSettlement = false;
     bool hasAdjacentRoad = false;
 
-    for (int intersectionid : roads[roadId]->getAdjIntersections()) {  
-        if (intersections[intersectionid] != nullptr && intersections[intersectionid]->getOwner() == playerName) {
+    for (int intersectionid : roads[roadId]->getAdjIntersections()) { 
+        if(intersections[intersectionid] == nullptr){
+            break;
+        }
+        if (intersections[intersectionid]->getOwner() == playerName) {
             hasAdjacentSettlement = true;
             break;
         }
-        if(intersections[intersectionid]->getAdjRoads().size() > 0){
-            for(Road* road : intersections[intersectionid]->getAdjRoads()){
-                if(road != nullptr && road->getOwner() == playerName){
-                    hasAdjacentRoad = true;
-                    break;
-                }
+        for(Road* road : intersections[intersectionid]->getAdjRoads()){
+            if(road == nullptr){
+                break;
             }
-        }   
+            if(road->getOwner() == playerName){
+                hasAdjacentRoad = true;
+                break;
+            }
+        }
+       
     }
     
-    if (!hasAdjacentRoad && !hasAdjacentSettlement) {
-        cout << "Can't build - Settlement must be connected to one of your roads." << endl;
+    if (hasAdjacentRoad == false && hasAdjacentSettlement == false) {
+        cout <<"hasAdjacentRoad: " << hasAdjacentRoad << " hasAdjacentSettlement: " << hasAdjacentSettlement << endl;
+        cout << "problem here" << endl;
+        cout << "Can't build - road must be adjacent to another road/settlement" << endl;
         return false;
     }
     return true;

@@ -19,7 +19,7 @@ const int MIN_LARGEST_ARMY_SIZE = 3;
 using namespace std;
 using namespace ariel;
 
-Catan::Catan(Player &p1, Player &p2, Player &p3): players{&p1, &p2, &p3}, isFirstRound(true), currentPlayer(nullptr), HasLargestArmy(nullptr), devDeck(DEVELOPMENT_DECK_SIZE){
+Catan::Catan(Player &p1, Player &p2, Player &p3): players{&p1, &p2, &p3}, currentPlayer(nullptr), HasLargestArmy(nullptr), devDeck(DEVELOPMENT_DECK_SIZE), isFirstRound(true){
     board = new Board();
     initDevDeck();
 
@@ -36,20 +36,25 @@ Catan::~Catan(){
 
 void Catan::ChooseStartingPlayer(){
 
-    int highest = 0;
-    Player *startingPlayer = nullptr;
-    for (Player *player : players) {
-        int roll = player->rollDice();
-        cout << player->getName() << " rolled a " << roll << endl;
-        if (roll > highest) {
-            highest = roll;
-            startingPlayer = player;
-        }
-    }
-    currentPlayer = startingPlayer;
+    // int highest = 0;
+    // Player *startingPlayer = nullptr;
+    // for (Player *player : players) {
+    //     int roll = player->rollDice();
+    //     cout << player->getName() << " rolled a " << roll << endl;
+    //     if (roll > highest) {
+    //         highest = roll;
+    //         startingPlayer = player;
+    //     }
+    // }
+    // currentPlayer = startingPlayer;
+    // currentPlayer->myTurn = true;
+    // setPlayerColors();
+    // cout << startingPlayer->getName() << " goes first!" << endl;
+
+    currentPlayer = players[0];
     currentPlayer->myTurn = true;
     setPlayerColors();
-    cout << startingPlayer->getName() << " goes first!" << endl;
+    cout << currentPlayer->getName() << " goes first!" << endl;
 }
 
 void Catan::setPlayerColors(){

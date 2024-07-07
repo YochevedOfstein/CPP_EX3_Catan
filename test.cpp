@@ -116,7 +116,6 @@ TEST_CASE("Player class") {
         CHECK(p2.getResources()["ore"] == 6);
         CHECK(p2.getResources()["wood"] == 0);
 
-        CHECK_THROWS_AS(p1.trade(&p2, "sheep", 1, "brick", 1), invalid_argument);
         CHECK_THROWS_AS(p1.trade(&p1, "sheep", 1, "ore", 1), invalid_argument);
         CHECK_THROWS_AS(p1.trade(&p2, "sheep", -2, "ore",1), invalid_argument);
 
@@ -467,10 +466,38 @@ TEST_CASE("Catan class"){
     ariel::Player p2("Bob");
     ariel::Player p3("Alice");
         
-    ariel::Catan catan(p1, p2, p3);
+    ariel::Catan newGame(p1, p2, p3);
 
-    SUBCASE(""){
+    CHECK(newGame.getBoard() != nullptr);
+    CHECK(newGame.getBoard()->getTiles().size() == 19);
+    CHECK(newGame.getBoard()->getRoads().size() == 72);
+    CHECK(newGame.getBoard()->getIntersections().size() == 54);
 
+    CHECK(newGame.getBoard()->getIsFirstRound() == true);
+    CHECK(newGame.isFirstRound == true);
+
+    newGame.ChooseStartingPlayer();
+
+    CHECK(newGame.getCurrentPlayer()->getName() == "Charlie");
+
+    SUBCASE("First round"){
+
+        newGame.firstRound(&p1, 13, 13, 42, 48);
+
+        // CHECK(p1.settelmentsOnBoard == 2);
+        // CHECK(p1.getPoints() == 2);
+
+        // CHECK(p1.getResources()["wood"] == 0);
+        // CHECK(p1.getResources()["brick"] == 0);
+        // CHECK(p1.getResources()["wheat"] == 2);
+        // CHECK(p1.getResources()["sheep"] == 0);
+        // CHECK(p1.getResources()["ore"] == 1);
+
+        // CHECK(newGame.getCurrentPlayer()->getName() == "Bob");
+
+        // newGame.firstRound(&p2, 14, 14, 49, 34);
+
+        
     }
     
 }

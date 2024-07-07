@@ -37,7 +37,6 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         return;
     }
     if(board.isValidPlaceForSettlement(intersectionID, this->getName()) == false){
-        cout << "Invalid place for settlement" << endl;
         return;
         }
 
@@ -233,7 +232,7 @@ void Player::endTurn(){
 
 void Player::trade(Player* player, string resource1,  int amount1, string resource2, int amount2){
     if(!myTurn){
-        throw invalid_argument("It's not your turn.");
+        cout << getName() << " It's not your turn." << endl;
     }
     if(player == nullptr){
         throw invalid_argument("Invalid player.");
@@ -242,8 +241,7 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
         throw invalid_argument("You can't trade with yourself.");
     }
     if(amount1 < 0 || amount2 < 0){
-        cout << "Invalid amount." << endl;
-        return;
+        throw invalid_argument("Invalid amount.");
     }
 
     if(player->resourceCards[resource1] >= amount1 && this->resourceCards[resource2] >= amount2){

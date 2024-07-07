@@ -176,6 +176,8 @@ int main()
 
     p3.endTurn();
 
+    game.printWinner();
+
     return 0;
 
 }
