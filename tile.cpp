@@ -6,11 +6,9 @@
 using namespace std;
 using namespace ariel;
 
-Tile::Tile(): resource(ResourceType::NONE), number(-1){}
-
 Tile::Tile(int ID): resource(ResourceType::NONE), adjIntersections(6, -1), number(-1), id(ID){}
 
-string Tile::getType(){
+string Tile::getType() const{
     return Resource(this->resource).getTypeName();
 }
 
@@ -21,7 +19,7 @@ void Tile::setType(ResourceType type){
     this->resource = Resource(type);
 }
 
-int Tile::getNumber(){
+int Tile::getNumber() const{
     return this->number;
 }
 
@@ -63,6 +61,6 @@ void Tile::setId(int ID){
     this->id = ID;
 }
 
-int Tile::getId(){
+int Tile::getId() const{
     return this->id;
 }

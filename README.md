@@ -23,7 +23,7 @@ This project consists of various classes that help implement the game. Some clas
 
 ## Class Details
 ### Board
-The class `board.cpp` represents the game board and manages the overall state of the the pieces. It includes functionalities to initialize the board, place settlements and roads, and check valid moves.
+The class `board.cpp` manages the overall game board and its components, including tiles, roads and intersections. It provides methods to initialize the board, validate and place roads and settlements and building cities.
 
 **Key Methods:**
 * `initBoard()` - Sets up the initial state of the board, by calling helper functions to initialize thr roads, intersections and tiles:
@@ -34,7 +34,7 @@ The class `board.cpp` represents the game board and manages the overall state of
 * `buildCity(int intersectionId, string playerName)` - Bulids a city where one used to have a settlement.
 
 ### Catan
-The class `catan.cpp` encapsulates the game logic, including player turns, resource distribution, and win conditions.
+The class `catan.cpp` encapsulates the game logic, including player turns, resource distribution, development card management, and determining the winner.
 
 **Key Methods:**
 * `ChooseStartingPlayer()` - Initialize which player starts and calls a function that sets each players colors.
@@ -43,7 +43,7 @@ The class `catan.cpp` encapsulates the game logic, including player turns, resou
 * `nextTurn()`- Advances the turn to the next player.
 * `playTurn(Player *player)` - Manages the player's turn, including dice rolling and resource distribution.
 * `buyDevCard(Player *player)` - Allows the current player to buy a development card.
-* *Development Card Methods* - Each method implements the effect of playing a specific development card.
+* *Development Card Methods* - Implement methods corresponding to each development card's effect, such as `playKnightDevCard(Player *player)` for the Knight card.
 * `checkLargestArmy()` - Checks and updates the player with the largest army, adjusting points accordingly.
 * `printWinner()` - Determines and announces the player with the highest points if they meet the winning criteria.
 
@@ -51,7 +51,8 @@ The class `catan.cpp` encapsulates the game logic, including player turns, resou
 The class `developmentCard.cpp` represents a development card in the game, encapsulating the card type and its description, and keeping track of whether it was bought this turn.
 
 **Card Type**
-enum class CardType: Enumerates the types of development cards available in the game, such as KNIGHT, VICTORY_POINT, ROAD_BUILDING, MONOPOLY, and YEAR_OF_PLENTY.
+Types of development cards available in the game: 
+`KNIGHT`, `VICTORY_POINT`, `ROAD_BUILDING`, `MONOPOLY`, and `YEAR_OF_PLENTY`.
 
 **Key Methods:**
 * `DevelopmentCard(CardType type)` - Constructor that initializes the card with a specific type and sets its description.
@@ -65,14 +66,25 @@ The class `intersection.cpp` represents points on the Catan board where settleme
 
 **Key Methods:**
 * `Intersection(int ID)` - Constructor that initializes an intersection with a unique identifier.
-* 
+* `setOwner(string owner)` - Sets the owner of the intersection to the specified player.
+* `hasOwner()` - Checks if the intersection has an owner (returns true or false).
+* `getOwner()` - Returns the name of the owner of the intersection.
+* `setHasCity(bool hasCity)` - Sets whether the intersection has a city.
+* `getHasCity()` - Checks if the intersection has a city or not.
+* `setAdjIntersection(Intersection* intersection1, Intersection* intersection2, Intersection* intersection3)` - 
+* `getAdjIntersections()` - Retrieves adjacent intersections.
+* `setAdjRoad(Road* road1, Road* road2, Road* road3)`
+* `getAdjRoads()` - 
+* `setAdjTile(Tile* tile1, Tile* tile2, Tile* tile3)`
+* `getAdjTiles()`
 
 ### Player
-The class `player.cpp` represents participants in the Catan game, managing resources, development cards, and actions during their turns.
-
+The class `player.cpp` represents participants in the Catan game, managing resources, development cards, facilitate player trades and actions during their turns.
 
 ### Resource 
 The class `resource.cpp` represents the different types of resources available in Catan that reresent every tile in the game.
+
+**Key Methods:**
 * `Resource(ResourceType type)` - Constructor that initializes the resource with a specific type.
 * `getType()` -
 * `string getTypeName()` - 
@@ -83,6 +95,7 @@ The class `road.cpp` represents roads on the Catan board where a player can buil
 ### Tile
 The class `tile.cpp` represents hexagonal tiles on the board that produce resources based on dice rolls.
 
-
+## Tests
+This project includes comprehensive unit tests using the `doctest.h` framework. These tests cover initialization, game rules, player actions, resource management, and edge cases to ensure the robustness and correctness of the implementation.
 
 

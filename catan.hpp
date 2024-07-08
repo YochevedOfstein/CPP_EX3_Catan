@@ -44,8 +44,8 @@ namespace ariel{
             void playKnightDevCard(Player *player);
             void playVictoryPointDevCard(Player *player);
 
-            Player* getCurrentPlayer();
-            Board* getBoard();
+            Player* getCurrentPlayer() const;
+            Board* getBoard() const;
             void printWinner();
             bool isThereAWinner();
 

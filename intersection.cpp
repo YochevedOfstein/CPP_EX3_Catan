@@ -5,8 +5,6 @@
 using namespace std;
 using namespace ariel;
 
-Intersection::Intersection(): owner(""), hasSettlement(false), hasCity(false), id(-1){}
-
 Intersection::Intersection(int ID): owner(""), hasSettlement(false), hasCity(false), adjIntersections(3, nullptr), adjRoads(3, nullptr), adjTiles(3, nullptr), id(ID){}
 
 void Intersection::setOwner(string owner){
@@ -24,7 +22,7 @@ bool Intersection::hasOwner(){
     return true;
 }
 
-string Intersection::getOwner(){
+string Intersection::getOwner() const{
     return this->owner;
 }
 
@@ -40,7 +38,7 @@ void Intersection::setHasCity(bool hasCity){
     this->hasSettlement = false;
 }
 
-bool Intersection::getHasCity(){
+bool Intersection::getHasCity() const{
     return this->hasCity;
 }
 
@@ -52,7 +50,7 @@ void Intersection::setAdjIntersection(Intersection* intersection1, Intersection*
 
 }
 
-vector<Intersection*> Intersection::getAdjIntersections(){
+vector<Intersection*> Intersection::getAdjIntersections() const{
     return this->adjIntersections;
 }
 
@@ -65,7 +63,7 @@ void Intersection::setAdjRoad(Road* road1, Road* road2, Road* road3){
     this->adjRoads[2] = road3;
 }
 
-vector<Road*> Intersection::getAdjRoads(){
+vector<Road*> Intersection::getAdjRoads() const{
     return this->adjRoads;
 }
 
@@ -75,7 +73,7 @@ void Intersection::setAdjTile(Tile* tile1, Tile* tile2, Tile* tile3){
     this->adjTiles[2] = tile3;
 }
 
-vector<Tile*> Intersection::getAdjTiles(){
+vector<Tile*> Intersection::getAdjTiles() const{
     return this->adjTiles;
 }
 
@@ -86,7 +84,7 @@ void Intersection::setId(int ID){
     this->id = ID;
 }
 
-int Intersection::getId(){
+int Intersection::getId() const{
     return this->id;
 }
 

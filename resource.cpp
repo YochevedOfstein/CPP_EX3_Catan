@@ -3,8 +3,6 @@
 using namespace std;
 using namespace ariel;
 
-Resource::Resource() : type(ResourceType::NONE) {}
-
 Resource::Resource(ResourceType type) : type(type) {}
 
 ResourceType Resource::getType() const {

@@ -5,8 +5,6 @@
 using namespace std;
 using namespace ariel;
 
-Road::Road(): owner(""), id(-1){}
-
 Road::Road(int ID): owner(""), adjIntersections(2, -1), id(ID){}
 
 void Road::setOwner(string newowner){
@@ -16,11 +14,11 @@ void Road::setOwner(string newowner){
     this->owner = newowner;
 }
 
-bool Road::hasOwner(){
+bool Road::hasOwner() const{
     return !owner.empty();
 }
 
-string Road::getOwner(){
+string Road::getOwner() const{
     return this->owner;
 }
 
@@ -38,7 +36,7 @@ void Road::addAdjIntersections(int intersection1, int intersection2){
         this->adjIntersections[1] = intersection2;
 }
 
-vector<int> Road::getAdjIntersections(){
+vector<int> Road::getAdjIntersections() const{
     return this->adjIntersections;
 }
 
@@ -49,7 +47,7 @@ void Road::setId(int ID){
     this->id = ID;
 }
 
-int Road::getId(){
+int Road::getId() const{
     return this->id;
 }
 

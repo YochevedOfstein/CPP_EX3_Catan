@@ -391,11 +391,11 @@ void Board::initTiles(){
 
 }
 
-void Board::placeSettelemnt(int interId, string playerName){
+void Board::placeSettlement(int interId, string playerName){
     intersections[interId]->setOwner(playerName);
 }
 
-vector<Tile*> Board::getTilesAdjToSettlement(int interId){
+vector<Tile*> Board::getTilesAdjToSettlement(int interId) const{
     if(interId < 0 || interId >= INTERSECTIONS){
         throw invalid_argument("Invalid intersection id.");
     }
@@ -436,6 +436,37 @@ bool Board::isValidPlaceForSettlement(int interId, string playerName){
     }
     return true;
 }
+
+// bool Board::isValidFirstSettlements(string playerName, int intersection, int road){
+
+//     if(intersection < 0 || intersection >= INTERSECTIONS || road < 0 || road >= INTERSECTIONS){
+//         return false;
+//     }
+
+//     if(intersections[intersection]->hasOwner() || roads[road]->hasOwner()){
+//         return false;
+//     }
+
+//     for(Intersection* neighbor : intersections[intersection]->getAdjIntersections()){
+//         if(neighbor == nullptr){
+//             break;
+//         }
+//         if(neighbor->hasOwner()){
+//             return false;
+//         }
+//     }
+//     int count = 0;
+//     for(int neighbor : roads[road]->getAdjIntersections()){
+//         if(intersections[neighbor]->getOwner() == playerName){
+//             count++;
+//         }
+//     }
+
+//     if(count == 0){
+//         return false;
+//     }
+//     return true;
+// }
 
 void Board::placeRoad(int roadId, string playerName){
 
@@ -478,8 +509,6 @@ bool Board::isValidPlaceForRoad(int roadId, string playerName){
     }
     
     if (hasAdjacentRoad == false && hasAdjacentSettlement == false) {
-        cout <<"hasAdjacentRoad: " << hasAdjacentRoad << " hasAdjacentSettlement: " << hasAdjacentSettlement << endl;
-        cout << "problem here" << endl;
         cout << "Can't build - road must be adjacent to another road/settlement" << endl;
         return false;
     }
@@ -495,19 +524,19 @@ void Board::buildCity(int intersectionId, string playerName){
 
 }
 
-vector<Road*> Board::getRoads(){
+vector<Road*> Board::getRoads() const{
     return roads;
 }
 
-vector<Intersection*> Board::getIntersections(){
+vector<Intersection*> Board::getIntersections() const{
     return intersections;
 }
 
-vector<Tile*> Board::getTiles(){
+vector<Tile*> Board::getTiles() const{
     return tiles;
 }
 
-bool Board::getIsFirstRound(){
+bool Board::getIsFirstRound() const{
     return theFirstRound;
 }
 

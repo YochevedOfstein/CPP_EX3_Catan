@@ -17,15 +17,14 @@ namespace ariel{
             int id;
 
         public:
-            Road();
             Road(int ID);
             void setOwner(string owner);
-            bool hasOwner();
-            string getOwner();
+            bool hasOwner() const;
+            string getOwner() const;
             void addAdjIntersections(int intersection1, int intersection2);
-            vector<int> getAdjIntersections();
+            vector<int> getAdjIntersections() const;
             void setId(int ID);
-            int getId();    
+            int getId() const;    
 
     };
 }

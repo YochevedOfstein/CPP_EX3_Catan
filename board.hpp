@@ -29,16 +29,17 @@ namespace ariel{
 
             Board();
             ~Board();
-            void placeSettelemnt(int intersectionId, string playerName);
+            void placeSettlement(int intersectionId, string playerName);
             void placeRoad(int roadId, string playerName);
             void buildCity(int intersectionId, string playerName);
             bool isValidPlaceForSettlement(int intersectionId, string playerName);
             bool isValidPlaceForRoad(int roadId, string playerName);
-            vector<Tile*> getTilesAdjToSettlement(int intersectionId);
-            vector<Road*> getRoads();
-            vector<Intersection*> getIntersections();
-            vector<Tile*> getTiles();
-            bool getIsFirstRound();
+            // bool isValidFirstSettlements(string playerName, int intersection, int road);
+            vector<Tile*> getTilesAdjToSettlement(int intersectionId) const;
+            vector<Road*> getRoads() const;
+            vector<Intersection*> getIntersections() const;
+            vector<Tile*> getTiles() const;
+            bool getIsFirstRound() const;
             void setIsFirstRound(bool status);
             
 

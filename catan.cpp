@@ -103,7 +103,7 @@ void Catan::firstRound(Player *player, int intersectionID1, int road1, int inter
     }
 }
 
-Board* Catan::getBoard(){
+Board* Catan::getBoard() const{
     return board;
 }
 
@@ -169,8 +169,7 @@ void Catan::nextTurn(){
 
 void Catan::playTurn(Player *player){
     if(isFirstRound){
-        cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
-        return;
+        throw invalid_argument("First round is not over, every player must choose 2 settlements and 2 roads");
     }
     if(!currentPlayer->myTurn){
         nextTurn();
@@ -359,7 +358,7 @@ void Catan::playVictoryPointDevCard(Player *player){
     return;
 }
 
-Player* Catan::getCurrentPlayer(){
+Player* Catan::getCurrentPlayer() const{
 
     return currentPlayer;
 }

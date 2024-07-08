@@ -20,16 +20,15 @@ namespace ariel{
             int id;
 
         public:
-            Tile();
             Tile(int ID);
-            string getType();
+            string getType() const;
             void setType(ResourceType type);
-            int getNumber();
+            int getNumber() const;
             void setNumber(int number);
             void addAdjIntersections(int intersection1, int intersection2, int intersection3, int intersection4, int intersection5, int intersection6);
             vector<int> getAdjIntersections();
             void setId(int ID);
-            int getId();
+            int getId() const;
     };
 }
 #endif

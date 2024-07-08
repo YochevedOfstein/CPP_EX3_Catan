@@ -23,7 +23,6 @@ namespace ariel {
             ResourceType type;
 
         public:
-            Resource();
             Resource(ResourceType type);
 
             ResourceType getType() const;

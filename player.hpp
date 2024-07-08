@@ -52,28 +52,28 @@ namespace ariel{
             void printNumCities();
             int rollDice();
             void printPoints();
-            int getPoints();
+            int getPoints() const;
             void addPoints(int amount);
             void minusPoint(int amount);
             void printResources();
-            map<string, int> getResources();
+            map<string, int> getResources() const;
             void endTurn();
             void trade(Player* player, string resource1, int amount1, string resource2, int amount2); //player gives resource1 and gets resource2
-            string getName();
+            string getName() const;
             void addTile(Tile* tile);
-            vector<Tile*> getTiles();
+            vector<Tile*> getTiles() const;
             void addResourceCard(string resource, int amount);
             void minusResourceCard(string resource, int amount);
             void addKnight();
-            int getKnights();
+            int getKnights() const;
             void printNumKnights();
-            Color getColor();
+            Color getColor() const;
             void setColor(Color color);
             string colorToString(Color color);
             void printStatus();
             bool buyDevelopmentCard(DevelopmentCard* card);
             bool canPlayDevelopmentCard(CardType type);
-            vector<DevelopmentCard*> getDevelopmentCards();
+            vector<DevelopmentCard*> getDevelopmentCards() const;
             void printDevelopmentCards();
             void tradeFourForOne(string resource1, string resource2);
 

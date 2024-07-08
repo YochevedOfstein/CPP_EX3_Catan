@@ -119,6 +119,14 @@ TEST_CASE("Player class") {
         CHECK_THROWS_AS(p1.trade(&p1, "sheep", 1, "ore", 1), invalid_argument);
         CHECK_THROWS_AS(p1.trade(&p2, "sheep", -2, "ore",1), invalid_argument);
 
+        p1.tradeFourForOne("ore", "brick");
+
+        CHECK(p1.getResources()["ore"] == 0);
+        CHECK(p1.getResources()["wood"] == 1);
+        CHECK(p1.getResources()["brick"] == 1);
+
+        CHECK_THROWS_AS(p1.tradeFourForOne("dog", "wood"), invalid_argument);
+
     }
 
     SUBCASE("Player Points Management"){
@@ -194,8 +202,8 @@ TEST_CASE("Board") {
 
 
         CHECK(board.isValidPlaceForSettlement(1, "Yonatan") == true);
-        board.placeSettelemnt(1, "Yonatan");
-        
+        board.placeSettlement(1, "Yonatan");
+
         CHECK(board.getIntersections()[1]->getOwner() == "Yonatan");
 
         CHECK_FALSE(board.isValidPlaceForSettlement(1, "Chen"));
@@ -206,7 +214,7 @@ TEST_CASE("Board") {
 
     SUBCASE("Placing road"){
 
-        board.placeSettelemnt(4, "Yonatan");
+        board.placeSettlement(4, "Yonatan");
 
         CHECK(board.isValidPlaceForRoad(4, "Yonatan") == true);
         board.placeRoad(4, "Yonatan");
@@ -224,7 +232,7 @@ TEST_CASE("Board") {
         
         CHECK_THROWS_AS(board.buildCity(1, "Yonatan"), invalid_argument);
 
-        board.placeSettelemnt(1, "Yonatan");
+        board.placeSettlement(1, "Yonatan");
         board.buildCity(1, "Yonatan");
 
         CHECK(board.getIntersections()[1]->getHasCity() == true);
@@ -470,21 +478,40 @@ TEST_CASE("Catan class"){
 
     SUBCASE("First round"){
 
-        newGame.firstRound(&p1, 13, 13, 42, 48);
+        newGame.firstRound(&p1, 29, 41, 10, 13);
 
-        // CHECK(p1.settelmentsOnBoard == 2);
-        // CHECK(p1.getPoints() == 2);
+        CHECK(newGame.getBoard()->getIntersections()[29]->getOwner() == "Charlie");
+        CHECK(newGame.getBoard()->getRoads()[41]->getOwner() == "Charlie");
 
-        // CHECK(p1.getResources()["wood"] == 0);
-        // CHECK(p1.getResources()["brick"] == 0);
-        // CHECK(p1.getResources()["wheat"] == 2);
-        // CHECK(p1.getResources()["sheep"] == 0);
-        // CHECK(p1.getResources()["ore"] == 1);
+        CHECK(newGame.getBoard()->getIntersections()[10]->getOwner() == "Charlie");
+        CHECK(newGame.getBoard()->getRoads()[13]->getOwner() == "Charlie");
 
-        // CHECK(newGame.getCurrentPlayer()->getName() == "Bob");
+        CHECK(newGame.getBoard()->getIsFirstRound() == true);
 
-        // newGame.firstRound(&p2, 14, 14, 49, 34);
+        CHECK(p1.settelmentsOnBoard == 2);
+        CHECK(p1.citiesOnBoard == 0);
+        CHECK(p1.getPoints() == 2);
 
+        CHECK(newGame.getCurrentPlayer()->getName() == "Bob");
+
+        newGame.firstRound(&p3, 13, 15, 42, 58);
+
+        newGame.firstRound(&p2, 13, 15, 42, 58);
+
+        CHECK(newGame.getBoard()->getIntersections()[13]->getOwner() == "Bob");
+        CHECK(newGame.getBoard()->getRoads()[15]->getOwner() == "Bob");
+
+        CHECK(newGame.getBoard()->getIntersections()[42]->getOwner() == "Bob");
+        CHECK(newGame.getBoard()->getRoads()[58]->getOwner() == "Bob");
+
+        CHECK(newGame.getBoard()->getIsFirstRound() == true);
+
+        CHECK(newGame.getCurrentPlayer()->getName() == "Alice");
+
+        CHECK_THROWS_AS(newGame.playTurn(&p3), invalid_argument);
+
+        newGame.firstRound(&p3, 58, 60, 43, 59);
+        
         
     }
     

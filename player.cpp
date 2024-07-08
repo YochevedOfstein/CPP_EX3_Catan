@@ -28,7 +28,7 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         }
 
     if(board.getIsFirstRound() == true){
-        board.placeSettelemnt(intersectionID, this->getName());
+        board.placeSettlement(intersectionID, this->getName());
         addPoints(1);
         settelmentsOnBoard++;
         for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
@@ -48,7 +48,7 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         minusResourceCard("brick", 1);
         minusResourceCard("wheat", 1);
         minusResourceCard("sheep", 1);
-        board.placeSettelemnt(intersectionID, this->getName());
+        board.placeSettlement(intersectionID, this->getName());
         addPoints(1);
         settelmentsOnBoard++;
         cout << name << " placed a settelment on intersection number " << intersectionID << endl;
@@ -179,7 +179,7 @@ void Player::printPoints(){
     }
 }
 
-int Player::getPoints(){
+int Player::getPoints() const{
     return points;
 }
 
@@ -244,6 +244,13 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
 }
 
 void Player::tradeFourForOne(string resource1, string resource2){
+    
+    if(resource1 != "wood" && resource1 != "brick" && resource1 != "wheat" && resource1 != "sheep" && resource1 != "ore"){
+        throw invalid_argument("Invalid resource");
+    }
+    if(resource2 != "wood" && resource2 != "brick" && resource2 != "wheat" && resource2 != "sheep" && resource2 != "ore"){
+        throw invalid_argument("Invalid resource");
+    }
     if(!myTurn){
         cout << getName() << " It's not your turn." << endl;
         return;
@@ -257,7 +264,7 @@ void Player::tradeFourForOne(string resource1, string resource2){
     cout << name << " trades 4 " << resource1 << " for 1 " << resource2 << endl;
 }
 
-string Player::getName(){
+string Player::getName() const{
     return name;
 }
 
@@ -266,7 +273,7 @@ void Player::addTile(Tile* tile){
     tiles.push_back(tile);
 }
 
-vector<Tile*> Player::getTiles(){
+vector<Tile*> Player::getTiles()const{
     return tiles;
 }
 
@@ -303,7 +310,7 @@ void Player::addKnight(){
     knights++;
 }
 
-int Player::getKnights(){
+int Player::getKnights() const{
     return knights;
 }
 
@@ -313,7 +320,7 @@ void Player::printNumKnights(){
     }
 }
 
-Color Player::getColor(){
+Color Player::getColor() const{
     return color;
 }
 
@@ -364,11 +371,11 @@ int Player::getNumOfOre(){
     return resourceCards["ore"];
 }
 
-map<string, int> Player::getResources(){
+map<string, int> Player::getResources() const{
     return resourceCards;
 }
 
-vector<DevelopmentCard*> Player::getDevelopmentCards(){
+vector<DevelopmentCard*> Player::getDevelopmentCards() const{
     return developmentCards;
 }
 
