@@ -195,8 +195,7 @@ TEST_CASE("Board") {
 
         CHECK(board.isValidPlaceForSettlement(1, "Yonatan") == true);
         board.placeSettelemnt(1, "Yonatan");
-
-        CHECK(board.getIntersections()[1]->getHasSettlement() == true);
+        
         CHECK(board.getIntersections()[1]->getOwner() == "Yonatan");
 
         CHECK_FALSE(board.isValidPlaceForSettlement(1, "Chen"));
@@ -229,7 +228,6 @@ TEST_CASE("Board") {
         board.buildCity(1, "Yonatan");
 
         CHECK(board.getIntersections()[1]->getHasCity() == true);
-        CHECK(board.getIntersections()[1]->getHasSettlement() == false);
     } 
 
 
@@ -241,7 +239,6 @@ TEST_CASE("Intersection class"){
 
     CHECK(i1.getId() == 1);
     CHECK_FALSE(i1.hasOwner());
-    CHECK_FALSE(i1.getHasSettlement());
     CHECK_FALSE(i1.getHasCity());
 
     SUBCASE("Intesection id"){
@@ -262,22 +259,13 @@ TEST_CASE("Intersection class"){
 
         CHECK_THROWS_AS(i1.setOwner("Chanan"), invalid_argument);
 
-        i1.setHasSettlement(true);
-
-        CHECK(i1.getHasSettlement() == true);
-
         CHECK_FALSE(i1.getHasCity());
 
         ariel::Intersection i2(2);
 
         CHECK_THROWS_AS(i2.setHasCity(true), invalid_argument);
-        CHECK_THROWS_AS(i2.setHasSettlement(true), invalid_argument);
 
         i2.setOwner(p1.getName());
-
-        i2.setHasSettlement(true);
-
-        CHECK(i2.getHasSettlement() == true);
 
         i2.setHasCity(true);
 

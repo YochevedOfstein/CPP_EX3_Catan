@@ -9,20 +9,6 @@ Intersection::Intersection(): owner(""), hasSettlement(false), hasCity(false), i
 
 Intersection::Intersection(int ID): owner(""), hasSettlement(false), hasCity(false), adjIntersections(3, nullptr), adjRoads(3, nullptr), adjTiles(3, nullptr), id(ID){}
 
-// Intersection::~Intersection(){
-
-//     for(Intersection* intersection : this->adjIntersections){
-//         delete intersection;
-//     }
-//     adjIntersections.clear();
-
-//     for(Road* road : this->adjRoads){
-//         delete road;
-//     }
-
-//     adjRoads.clear();
-// }
-
 void Intersection::setOwner(string owner){
     if(hasOwner()){
         throw invalid_argument("Already has an owner");
@@ -42,16 +28,6 @@ string Intersection::getOwner(){
     return this->owner;
 }
 
-void Intersection::setHasSettlement(bool hasSettlement){
-    if(!hasOwner() && hasSettlement){
-        throw invalid_argument("Cannot have a settlement without an owner");
-    }
-    this->hasSettlement = hasSettlement;
-}
-
-bool Intersection::getHasSettlement(){
-    return this->hasSettlement;
-}
 
 void Intersection::setHasCity(bool hasCity){
     if(!hasOwner() && hasCity){

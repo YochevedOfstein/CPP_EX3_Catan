@@ -313,7 +313,7 @@ void Catan::playYearOfPlentyDevCard(Player *player, string resource1, string res
     return;
 }
 
-void Catan::playRoadBuildingDevCard(Player *player, size_t road1, size_t road2){
+void Catan::playRoadBuildingDevCard(Player *player, int road1, int road2){
     if(isFirstRound){
         cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
         return;

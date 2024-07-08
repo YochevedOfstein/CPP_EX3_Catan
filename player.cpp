@@ -14,19 +14,6 @@ Player::Player(string name) : name(name), color(Color::NONE), points(0), knights
     resourceCards["ore"] = 0;
 }
 
-// Player::~Player(){
-
-//     // for(DevelopmentCard* devCard : developmentCards){
-//     //     delete devCard;
-//     // }
-//     // developmentCards.clear();
-
-//     // for(Tile* tile : tiles){
-//     //     delete tile;
-//     // }
-//     // tiles.clear();
-// }
-
 void Player::placeSettelemnt(int intersectionID, Board& board){
     if(!myTurn){
         cout << getName() << " It's not your turn." << endl;

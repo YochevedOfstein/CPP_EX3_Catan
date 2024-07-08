@@ -393,8 +393,6 @@ void Board::initTiles(){
 
 void Board::placeSettelemnt(int interId, string playerName){
     intersections[interId]->setOwner(playerName);
-    intersections[interId]->setHasSettlement(true);
-
 }
 
 vector<Tile*> Board::getTilesAdjToSettlement(int interId){
@@ -494,7 +492,6 @@ void Board::buildCity(int intersectionId, string playerName){
         throw invalid_argument("You don't own this intersection.");
     }
     intersections[intersectionId]->setHasCity(true);
-    intersections[intersectionId]->setHasSettlement(false);
 
 }
 

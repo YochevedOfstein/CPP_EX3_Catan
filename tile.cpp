@@ -10,15 +10,6 @@ Tile::Tile(): resource(ResourceType::NONE), number(-1){}
 
 Tile::Tile(int ID): resource(ResourceType::NONE), adjIntersections(6, -1), number(-1), id(ID){}
 
-// Tile::~Tile(){
-
-//     for(Intersection* intersection : this->adjIntersections){
-//         delete intersection;
-//     }
-    
-//     adjIntersections.clear();
-// }
-
 string Tile::getType(){
     return Resource(this->resource).getTypeName();
 }
@@ -64,20 +55,6 @@ vector<int> Tile::getAdjIntersections(){
     }
     return this->adjIntersections;
 }
-
-// void Tile::setAdjIntersections(Intersection* intersection1, Intersection* intersection2, Intersection* intersection3, Intersection* intersection4, Intersection* intersection5, Intersection* intersection6){
-//     this->adjIntersections[0] = intersection1;
-//     this->adjIntersections[1] = intersection2;
-//     this->adjIntersections[2] = intersection3;
-//     this->adjIntersections[3] = intersection4;
-//     this->adjIntersections[4] = intersection5;
-//     this->adjIntersections[5] = intersection6;
-// }
-
-
-// vector<Intersection*> Tile::getAdjIntersections(){
-//     return this->adjIntersections;
-// }
 
 void Tile::setId(int ID){
     if(this->id != -1){

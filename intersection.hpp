@@ -28,12 +28,9 @@ namespace ariel{
         public:
             Intersection();
             Intersection(int ID);
-            // ~Intersection();
             void setOwner(string owner);
             bool hasOwner();
             string getOwner();  
-            void setHasSettlement(bool hasSettlement);
-            bool getHasSettlement();
             void setHasCity(bool hasCity);
             bool getHasCity();
             void setAdjIntersection(Intersection* intersection1, Intersection* intersection2, Intersection* intersection3);

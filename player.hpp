@@ -41,7 +41,6 @@ namespace ariel{
 
         public:
             Player(const string name);
-            // ~Player();
             bool myTurn;
             bool playedDevCardThisTurn;
             int settelmentsOnBoard;

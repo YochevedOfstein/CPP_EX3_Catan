@@ -40,7 +40,7 @@ namespace ariel{
 
             void playMonopolyDevCard(Player *player, string resource);
             void playYearOfPlentyDevCard(Player *player, string resource1, string resource2);
-            void playRoadBuildingDevCard(Player *player, size_t road1, size_t road2);
+            void playRoadBuildingDevCard(Player *player, int road1, int road2);
             void playKnightDevCard(Player *player);
             void playVictoryPointDevCard(Player *player);
 
