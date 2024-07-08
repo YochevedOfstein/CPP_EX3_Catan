@@ -32,6 +32,7 @@ The class `board.cpp` manages the overall game board and its components, includi
 * `isValidPlaceForSettlement(int intersectionId, string playerName)` - Validates if a settlement can be placed at a specified intersection.
 * `placeSettelemnt(int intersectionId, string playerName)` - Places a settlement at a specified intersection.
 * `buildCity(int intersectionId, string playerName)` - Bulids a city where one used to have a settlement.
+* `isValidFirstSettlements(string playerName, int intersection, int road)` - Validates if a player can place a settlement and road on starting turn.
 
 ### Catan
 The class `catan.cpp` encapsulates the game logic, including player turns, resource distribution, development card management, and determining the winner.
@@ -51,6 +52,7 @@ The class `catan.cpp` encapsulates the game logic, including player turns, resou
 The class `developmentCard.cpp` represents a development card in the game, encapsulating the card type and its description, and keeping track of whether it was bought this turn.
 
 **Card Type**
+
 Types of development cards available in the game: 
 `KNIGHT`, `VICTORY_POINT`, `ROAD_BUILDING`, `MONOPOLY`, and `YEAR_OF_PLENTY`.
 
@@ -82,7 +84,12 @@ The class `intersection.cpp` represents points on the Catan board where settleme
 The class `player.cpp` represents participants in the Catan game, managing resources, development cards, facilitate player trades and actions during their turns.
 
 ### Resource 
-The class `resource.cpp` represents the different types of resources available in Catan that reresent every tile in the game.
+The class `resource.cpp` represents the different types of resources available in Catan that represent every tile in the game.
+
+**Resource Type**
+
+Types of resources that represent tiles: 
+`WOOD`, `BRICK`, `SHEEP`, `WHEAT`, `ORE`, and `DESERT`.
 
 **Key Methods:**
 * `Resource(ResourceType type)` - Constructor that initializes the resource with a specific type.

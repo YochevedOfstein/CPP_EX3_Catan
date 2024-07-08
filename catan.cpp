@@ -74,32 +74,40 @@ void Catan::firstRound(Player *player, int intersectionID1, int road1, int inter
         return;
     }
     if(isFirstRound){
-        player->placeSettelemnt(intersectionID1, *board);
-        player->placeRoad(road1, *board);
-        player->placeSettelemnt(intersectionID2, *board);
-        player->placeRoad(road2, *board);
-        for(Tile* tile : player->getTiles()){
-            vector<int> tileAdjIntersections = tile->getAdjIntersections();
-            for(int inter : tileAdjIntersections){
-                if(inter == intersectionID2){
-                    player->addResourceCard(tile->getType(), 1);
+        if(getBoard()->isValidFirstSettlements(player->getName(),intersectionID1, road1) && getBoard()->isValidFirstSettlements(player->getName(), intersectionID2, road2)){
+            player->placeSettelemnt(intersectionID1, *board);
+            player->placeRoad(road1, *board);
+
+            player->placeSettelemnt(intersectionID2, *board);
+            player->placeRoad(road2, *board);
+
+            for(Tile* tile : player->getTiles()){
+                vector<int> tileAdjIntersections = tile->getAdjIntersections();
+                for(int inter : tileAdjIntersections){
+                    if(inter == intersectionID2){
+                        player->addResourceCard(tile->getType(), 1);
+                    }
                 }
             }
-        }
-        cout << player->getName() << " placed 2 settlement on intersections: "<< intersectionID1 << ", "<< intersectionID2 << endl;
-        cout << player->getName() << " placed 2 roads on roads: "<< road1 << ", "<< road2 << endl;
-        int count = 0;
-        for(Player *p : players){
-            if(p->settelmentsOnBoard == 2){
-                count++;
+            cout << player->getName() << " placed 2 settlement on intersections: "<< intersectionID1 << ", "<< intersectionID2 << endl;
+            cout << player->getName() << " placed 2 roads on roads: "<< road1 << ", "<< road2 << endl;
+
+            int count = 0;
+            for(Player *p : players){
+                if(p->settelmentsOnBoard == 2){
+                    count++;
+                }
             }
+            if(count == 3){
+                isFirstRound = false;
+                board->setIsFirstRound(false);
+                cout << "First round is over." << endl;
+            }
+            nextTurn();
         }
-        if(count == 3){
-            isFirstRound = false;
-            board->setIsFirstRound(false);
-            cout << "First round is over." << endl;
+        else{
+            cout << player->getName() << " must choose new settlements and roads for first round" << endl;
         }
-    nextTurn();
     }
 }
 

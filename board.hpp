@@ -34,7 +34,7 @@ namespace ariel{
             void buildCity(int intersectionId, string playerName);
             bool isValidPlaceForSettlement(int intersectionId, string playerName);
             bool isValidPlaceForRoad(int roadId, string playerName);
-            // bool isValidFirstSettlements(string playerName, int intersection, int road);
+            bool isValidFirstSettlements(string playerName, int intersection, int road);
             vector<Tile*> getTilesAdjToSettlement(int intersectionId) const;
             vector<Road*> getRoads() const;
             vector<Intersection*> getIntersections() const;

@@ -437,36 +437,32 @@ bool Board::isValidPlaceForSettlement(int interId, string playerName){
     return true;
 }
 
-// bool Board::isValidFirstSettlements(string playerName, int intersection, int road){
-
-//     if(intersection < 0 || intersection >= INTERSECTIONS || road < 0 || road >= INTERSECTIONS){
-//         return false;
-//     }
-
-//     if(intersections[intersection]->hasOwner() || roads[road]->hasOwner()){
-//         return false;
-//     }
-
-//     for(Intersection* neighbor : intersections[intersection]->getAdjIntersections()){
-//         if(neighbor == nullptr){
-//             break;
-//         }
-//         if(neighbor->hasOwner()){
-//             return false;
-//         }
-//     }
-//     int count = 0;
-//     for(int neighbor : roads[road]->getAdjIntersections()){
-//         if(intersections[neighbor]->getOwner() == playerName){
-//             count++;
-//         }
-//     }
-
-//     if(count == 0){
-//         return false;
-//     }
-//     return true;
-// }
+bool Board::isValidFirstSettlements(string playerName, int intersection, int road){
+    if(intersection < 0 || intersection >= INTERSECTIONS || road < 0 || road >= ROADS){
+        return false;
+    }
+    if(intersections[intersection]->hasOwner() || roads[road]->hasOwner()){
+        return false;
+    }
+    for(Intersection* neighbor : intersections[intersection]->getAdjIntersections()){
+        if(neighbor == nullptr){
+            break;
+        }
+        if(neighbor->hasOwner()){
+            return false;
+        }
+    }
+    int count = 0;
+    for(int neighbor : roads[road]->getAdjIntersections()){
+        if(neighbor == intersection){
+            count++;
+        }
+    }
+    if(count == 0){
+        return false;
+    }
+    return true;
+}
 
 void Board::placeRoad(int roadId, string playerName){
 
@@ -496,6 +492,13 @@ bool Board::isValidPlaceForRoad(int roadId, string playerName){
             hasAdjacentSettlement = true;
             break;
         }
+
+        if(getIsFirstRound()){
+            if(hasAdjacentSettlement){
+                return true;
+            }
+        }
+
         for(Road* road : intersections[intersectionid]->getAdjRoads()){
             if(road == nullptr){
                 break;
@@ -505,8 +508,9 @@ bool Board::isValidPlaceForRoad(int roadId, string playerName){
                 break;
             }
         }
-       
     }
+
+
     
     if (hasAdjacentRoad == false && hasAdjacentSettlement == false) {
         cout << "Can't build - road must be adjacent to another road/settlement" << endl;

@@ -398,7 +398,7 @@ TEST_CASE("Tile class"){
         CHECK(t2.getNumber() == 10);
 
         CHECK_THROWS_AS(t2.setNumber(1), invalid_argument);
-        CHECK_THROWS_AS(t2.setType(ariel::ResourceType::NONE), invalid_argument);
+        CHECK_THROWS_AS(t2.setType(ariel::ResourceType::BRICK), invalid_argument);
 
         t1.setType(ariel::ResourceType::WOOD);
         t1.setNumber(9);
@@ -510,9 +510,17 @@ TEST_CASE("Catan class"){
 
         CHECK_THROWS_AS(newGame.playTurn(&p3), invalid_argument);
 
-        newGame.firstRound(&p3, 58, 60, 43, 59);
-        
-        
+        newGame.firstRound(&p3, 44, 60, 43, 59);
+
+        CHECK(p3.getPoints() != 2);
+        CHECK(p3.settelmentsOnBoard != 2);
+
+        newGame.firstRound(&p3, 22, 29, 44, 52);
+
+        CHECK(p3.getPoints() == 2);
+        CHECK(p3.settelmentsOnBoard == 2);
+
+        CHECK_FALSE(newGame.isFirstRound); 
     }
     
 }
