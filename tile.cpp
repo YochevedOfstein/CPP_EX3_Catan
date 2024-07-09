@@ -8,8 +8,12 @@ using namespace ariel;
 
 Tile::Tile(int ID): resource(ResourceType::NONE), adjIntersections(6, -1), number(-1), id(ID){}
 
-string Tile::getType() const{
-    return Resource(this->resource).getTypeName();
+string Tile::getTypeString() const{
+    return Resource(this->resource).getTypeNameForResource();
+}
+
+ResourceType Tile::getType() const{
+    return this->resource.getType();
 }
 
 void Tile::setType(ResourceType type){

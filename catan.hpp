@@ -38,8 +38,8 @@ namespace ariel{
             void buyDevCard(Player *player);
             void checkLargestArmy();
 
-            void playMonopolyDevCard(Player *player, string resource);
-            void playYearOfPlentyDevCard(Player *player, string resource1, string resource2);
+            void playMonopolyDevCard(Player *player, ResourceType resource);
+            void playYearOfPlentyDevCard(Player *player, ResourceType resource1, ResourceType resource2);
             void playRoadBuildingDevCard(Player *player, int road1, int road2);
             void playKnightDevCard(Player *player);
             void playVictoryPointDevCard(Player *player);

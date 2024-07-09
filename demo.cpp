@@ -34,7 +34,7 @@ int main()
 
     game.buyDevCard(&p1);
 
-    p1.trade(&p2, "wheat", 1, "brick", 1);
+    p1.trade(&p2, ResourceType::WHEAT, 1, ResourceType::BRICK, 1);
 
     game.buyDevCard(&p1);
 
@@ -74,9 +74,9 @@ int main()
 
     p3.printResources();
 
-    p3.trade(&p1, "wheat", 1, "brick", 1);
+    p3.trade(&p1, ResourceType::WHEAT, 1, ResourceType::BRICK, 1);
 
-    p3.trade(&p2, "wheat", 1, "brick", 1);
+    p3.trade(&p2, ResourceType::WHEAT, 1, ResourceType::BRICK, 1);
 
     p3.endTurn();
 
@@ -86,9 +86,9 @@ int main()
 
     p1.printResources();
 
-    p1.trade(&p2, "brick", 1, "ore", 1);
+    p1.trade(&p2, ResourceType::BRICK, 1, ResourceType::ORE, 1);
 
-    p1.trade(&p3, "wheat", 1, "ore", 1);
+    p1.trade(&p3, ResourceType::WHEAT, 1, ResourceType::ORE, 1);
 
     p1.printStatus();
 
@@ -130,7 +130,7 @@ int main()
 
     p2.placeRoad(57, *game.getBoard());
 
-    p2.trade(&p1, "wheat", 1, "ore", 1);
+    p2.trade(&p1, ResourceType::WHEAT, 1, ResourceType::ORE, 1);
 
     p2.placeSettelemnt(25, *game.getBoard());
 
@@ -142,7 +142,7 @@ int main()
 
     p3.printResources();
 
-    p3.trade(&p2, "wheat", 1, "sheep", 1);
+    p3.trade(&p2, ResourceType::WHEAT, 1, ResourceType::SHEEP, 1);
 
     p3.placeRoad(45, *game.getBoard());
 
@@ -166,7 +166,7 @@ int main()
 
     p3.printResources();
 
-    p3.tradeFourForOne("sheep", "wheat");
+    p3.tradeFourForOne(ResourceType::SHEEP, ResourceType::WHEAT);
 
     p3.printResources();
 

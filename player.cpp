@@ -7,11 +7,11 @@ using namespace std;
 using namespace ariel;
 
 Player::Player(string name) : name(name), color(Color::NONE), points(0), knights(0), myTurn(false), playedDevCardThisTurn(false),  settelmentsOnBoard(0), citiesOnBoard(0) {
-    resourceCards["wood"] = 0;
-    resourceCards["brick"] = 0;
-    resourceCards["wheat"] = 0;
-    resourceCards["sheep"] = 0;
-    resourceCards["ore"] = 0;
+    resourceCards[ResourceType::WOOD] = 0;
+    resourceCards[ResourceType::BRICK] = 0;
+    resourceCards[ResourceType::WHEAT] = 0;
+    resourceCards[ResourceType::SHEEP] = 0;
+    resourceCards[ResourceType::ORE] = 0;
 }
 
 void Player::placeSettelemnt(int intersectionID, Board& board){
@@ -44,10 +44,10 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
             cout << getName() << " doesn't have enough resources to build a settelment" << endl;
             return;
         }
-        minusResourceCard("wood", 1);
-        minusResourceCard("brick", 1);
-        minusResourceCard("wheat", 1);
-        minusResourceCard("sheep", 1);
+        minusResourceCard(ResourceType::WOOD, 1);
+        minusResourceCard(ResourceType::BRICK, 1);
+        minusResourceCard(ResourceType::WHEAT, 1);
+        minusResourceCard(ResourceType::SHEEP, 1);
         board.placeSettlement(intersectionID, this->getName());
         addPoints(1);
         settelmentsOnBoard++;
@@ -79,8 +79,8 @@ void Player::placeRoad(int roadID, Board& board){
             cout << getName() << " doesn't have enough resources to build road" << endl;
             return;
         }
-        minusResourceCard("wood", 1);
-        minusResourceCard("brick", 1);
+        minusResourceCard(ResourceType::WOOD, 1);
+        minusResourceCard(ResourceType::BRICK, 1);
         board.placeRoad(roadID, this->getName());
         cout << name << " placed a road on road number " << roadID << endl;
     }
@@ -101,8 +101,8 @@ void Player::buildCity(int intersectionID, Board& board){
             return;
         }
         else{
-            minusResourceCard("wheat", 2);
-            minusResourceCard("ore", 3);
+            minusResourceCard(ResourceType::WHEAT, 2);
+            minusResourceCard(ResourceType::ORE, 3);
             board.buildCity(intersectionID, this->getName());
             settelmentsOnBoard--;
             addPoints(1);
@@ -113,13 +113,13 @@ void Player::buildCity(int intersectionID, Board& board){
 }
 
 bool Player::buyDevelopmentCard(DevelopmentCard* card){
-    if(resourceCards["ore"] < 1 || resourceCards["sheep"] < 1 || resourceCards["wheat"] < 1){
+    if(resourceCards[ResourceType::ORE] < 1 || resourceCards[ResourceType::WHEAT] < 1 || resourceCards[ResourceType::SHEEP] < 1){
         cout << getName() << " doesn't have enough resources to buy a development card" << endl;
         return false;
     }
-    minusResourceCard("ore", 1);
-    minusResourceCard("sheep", 1);
-    minusResourceCard("wheat", 1);
+    minusResourceCard(ResourceType::ORE, 1);
+    minusResourceCard(ResourceType::SHEEP, 1);
+    minusResourceCard(ResourceType::WHEAT, 1);
     developmentCards.push_back(card);
     card->changeStatusOfTurn(true);
     return true;
@@ -142,7 +142,6 @@ bool Player::canPlayDevelopmentCard(CardType type){
             }
             cout << getName() <<" played a development card: " << (*devCard)->getDescription() << endl;
 
-            // delete *devCard;  
             developmentCards.erase(devCard);
             playedDevCardThisTurn = true;
             return true;
@@ -203,9 +202,9 @@ void Player::minusPoint(int amount){
 void Player::printResources() { // iterator usage - the iterator is used to iterate over the map to print the resource cards a player has
     cout << getName() << " has the following resources:" << endl;
     for (auto it = resourceCards.begin(); it != resourceCards.end(); ++it) {
-        const string& resource = it->first; // resource name
+        const ResourceType& resource = it->first; // resource name
         int number = it->second; // number of resources
-        cout << number << " " << resource << endl;
+        cout << number << " " << Resource::getTypeName(resource) << endl;
     }
 }
 
@@ -217,7 +216,7 @@ void Player::endTurn(){
     myTurn = false;
 }
 
-void Player::trade(Player* player, string resource1,  int amount1, string resource2, int amount2){
+void Player::trade(Player* player, ResourceType resource1,  int amount1, ResourceType resource2, int amount2){
     if(!myTurn){
         cout << getName() << " It's not your turn." << endl;
     }
@@ -236,21 +235,15 @@ void Player::trade(Player* player, string resource1,  int amount1, string resour
         player->addResourceCard(resource2, amount2);
         minusResourceCard(resource2, amount2);
         addResourceCard(resource1, amount1);
-        cout << name << " trades " << amount2 << " " << resource2 << " for "<< amount1 << " " << resource1 << " with " <<player->getName() << "." << endl;
+        cout << name << " trades " << amount2 << " " << Resource::getTypeName(resource2)  << " for "<< amount1 << " " << Resource::getTypeName(resource1) << " with " <<player->getName() << "." << endl;
     } else {
         cout << "Not enough resources to trade." << endl;
         return;
     }
 }
 
-void Player::tradeFourForOne(string resource1, string resource2){
+void Player::tradeFourForOne(ResourceType resource1, ResourceType resource2){
     
-    if(resource1 != "wood" && resource1 != "brick" && resource1 != "wheat" && resource1 != "sheep" && resource1 != "ore"){
-        throw invalid_argument("Invalid resource");
-    }
-    if(resource2 != "wood" && resource2 != "brick" && resource2 != "wheat" && resource2 != "sheep" && resource2 != "ore"){
-        throw invalid_argument("Invalid resource");
-    }
     if(!myTurn){
         cout << getName() << " It's not your turn." << endl;
         return;
@@ -261,7 +254,7 @@ void Player::tradeFourForOne(string resource1, string resource2){
     }
     minusResourceCard(resource1, 4);
     addResourceCard(resource2, 1);
-    cout << name << " trades 4 " << resource1 << " for 1 " << resource2 << endl;
+    cout << name << " trades 4 " << Resource::getTypeName(resource1) << " for 1 " << Resource::getTypeName(resource2) << endl;
 }
 
 string Player::getName() const{
@@ -277,10 +270,7 @@ vector<Tile*> Player::getTiles()const{
     return tiles;
 }
 
-void Player::addResourceCard(string resource, int amount){
-    if(resource != "wood" && resource != "brick" && resource != "wheat" && resource != "sheep" && resource != "ore"){
-        throw invalid_argument("Invalid resource");
-    }
+void Player::addResourceCard(ResourceType resource, int amount){
     if(resourceCards.find(resource) == resourceCards.end()){
         throw invalid_argument("Invalid resource");
     }
@@ -290,10 +280,7 @@ void Player::addResourceCard(string resource, int amount){
     resourceCards[resource] += amount;
 }
 
-void Player::minusResourceCard(string resource, int amount){
-    if(resource != "wood" && resource != "brick" && resource != "wheat" && resource != "sheep" && resource != "ore"){
-        throw invalid_argument("Invalid resource");
-    }
+void Player::minusResourceCard(ResourceType resource, int amount){
     if(resourceCards.find(resource) == resourceCards.end()){
         throw invalid_argument("Invalid resource");
     }
@@ -343,6 +330,7 @@ string Player::colorToString(Color color){
 
 void Player::printStatus(){
     cout << getName() <<  " status:" << endl;
+    cout << "Color: " << colorToString(color) << endl;
     printPoints();
     printNumSettelments();
     printNumCities();
@@ -352,26 +340,26 @@ void Player::printStatus(){
 }
 
 int Player::getNumOfWood(){
-    return resourceCards["wood"];
+    return resourceCards[ResourceType::WOOD];
 }
 
 int Player::getNumOfBrick(){
-    return resourceCards["brick"];
+    return resourceCards[ResourceType::BRICK];
 }
 
 int Player::getNumOfSheep(){
-    return resourceCards["sheep"];
+    return resourceCards[ResourceType::SHEEP];
 }
 
 int Player::getNumOfWheat(){
-    return resourceCards["wheat"];
+    return resourceCards[ResourceType::WHEAT];
 }
 
 int Player::getNumOfOre(){
-    return resourceCards["ore"];
+    return resourceCards[ResourceType::ORE];
 }
 
-map<string, int> Player::getResources() const{
+map<ResourceType, int> Player::getResources() const{
     return resourceCards;
 }
 

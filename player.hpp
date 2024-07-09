@@ -9,6 +9,7 @@
 #include "board.hpp"
 #include "resource.hpp"
 #include "developmentCard.hpp"
+#include "resource.hpp"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ namespace ariel{
             string name;
             Color color;
             int points;
-            map<string, int> resourceCards;
+            map<ResourceType, int> resourceCards;
             vector<DevelopmentCard*> developmentCards;
             vector<Tile*> tiles;
             int knights;
@@ -56,14 +57,14 @@ namespace ariel{
             void addPoints(int amount);
             void minusPoint(int amount);
             void printResources();
-            map<string, int> getResources() const;
+            map<ResourceType, int> getResources() const;
             void endTurn();
-            void trade(Player* player, string resource1, int amount1, string resource2, int amount2); //player gives resource1 and gets resource2
+            void trade(Player* player, ResourceType resource1, int amount1, ResourceType resource2, int amount2); //player gives resource1 and gets resource2
             string getName() const;
             void addTile(Tile* tile);
             vector<Tile*> getTiles() const;
-            void addResourceCard(string resource, int amount);
-            void minusResourceCard(string resource, int amount);
+            void addResourceCard(ResourceType resource, int amount);
+            void minusResourceCard(ResourceType resource, int amount);
             void addKnight();
             int getKnights() const;
             void printNumKnights();
@@ -75,7 +76,7 @@ namespace ariel{
             bool canPlayDevelopmentCard(CardType type);
             vector<DevelopmentCard*> getDevelopmentCards() const;
             void printDevelopmentCards();
-            void tradeFourForOne(string resource1, string resource2);
+            void tradeFourForOne(ResourceType resource1, ResourceType resource2);
 
 
     }; 

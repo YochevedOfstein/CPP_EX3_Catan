@@ -25,11 +25,11 @@ TEST_CASE("Player class") {
     CHECK(p1.getName() == "Charlie");
     CHECK(p1.getColor() == Color::NONE);
     CHECK(p1.getResources().size() == 5);
-    CHECK(p1.getResources()["wood"] == 0);
-    CHECK(p1.getResources()["brick"] == 0);
-    CHECK(p1.getResources()["wheat"] == 0);
-    CHECK(p1.getResources()["sheep"] == 0);
-    CHECK(p1.getResources()["ore"] == 0);
+    CHECK(p1.getResources()[ariel::ResourceType::WOOD] == 0);
+    CHECK(p1.getResources()[ariel::ResourceType::BRICK] == 0);
+    CHECK(p1.getResources()[ariel::ResourceType::WHEAT] == 0);
+    CHECK(p1.getResources()[ariel::ResourceType::SHEEP] == 0);
+    CHECK(p1.getResources()[ariel::ResourceType::ORE] == 0);
     CHECK(p1.getDevelopmentCards().size() == 0);
     CHECK(p1.getPoints() == 0);
     CHECK(p1.settelmentsOnBoard == 0);
@@ -41,41 +41,40 @@ TEST_CASE("Player class") {
 
     SUBCASE("Player Resource Management"){
 
-        p1.addResourceCard("wood", 1);
-        p1.addResourceCard("brick", 2);
-        p1.addResourceCard("wheat", 3);
-        p1.addResourceCard("sheep", 4);
-        p1.addResourceCard("ore", 5);
+        p1.addResourceCard(ariel::ResourceType::WOOD, 1);
+        p1.addResourceCard(ariel::ResourceType::BRICK, 2);
+        p1.addResourceCard(ariel::ResourceType::WHEAT, 3);
+        p1.addResourceCard(ariel::ResourceType::SHEEP, 4);
+        p1.addResourceCard(ariel::ResourceType::ORE, 5);
 
-        CHECK(p1.getResources()["wood"] == 1);
-        CHECK(p1.getResources()["brick"] == 2);
-        CHECK(p1.getResources()["wheat"] == 3);
-        CHECK(p1.getResources()["sheep"] == 4);
-        CHECK(p1.getResources()["ore"] == 5);
+        CHECK(p1.getResources()[ariel::ResourceType::WOOD] == 1);
+        CHECK(p1.getResources()[ariel::ResourceType::BRICK] == 2);
+        CHECK(p1.getResources()[ariel::ResourceType::WHEAT] == 3);
+        CHECK(p1.getResources()[ariel::ResourceType::SHEEP] == 4);
+        CHECK(p1.getResources()[ariel::ResourceType::ORE] == 5);
 
-        p1.minusResourceCard("wood", 1);
-        p1.minusResourceCard("brick", 2);
-        p1.minusResourceCard("wheat", 3);
+        p1.minusResourceCard(ariel::ResourceType::WOOD, 1);
+        p1.minusResourceCard(ariel::ResourceType::BRICK, 2);
+        p1.minusResourceCard(ariel::ResourceType::WHEAT, 3);
 
-        CHECK(p1.getResources()["wood"] == 0);
-        CHECK(p1.getResources()["brick"] == 0);
-        CHECK(p1.getResources()["wheat"] == 0);
-        CHECK(p1.getResources()["sheep"] == 4);
-        CHECK(p1.getResources()["ore"] == 5);
+        CHECK(p1.getResources()[ariel::ResourceType::WOOD] == 0);
+        CHECK(p1.getResources()[ariel::ResourceType::BRICK] == 0);
+        CHECK(p1.getResources()[ariel::ResourceType::WHEAT] == 0);
+        CHECK(p1.getResources()[ariel::ResourceType::SHEEP] == 4);
+        CHECK(p1.getResources()[ariel::ResourceType::ORE] == 5);
 
-        CHECK_THROWS_AS(p1.minusResourceCard("wood", 1), invalid_argument);
-        CHECK_THROWS_AS(p1.addResourceCard("wood", -1), invalid_argument);
-        CHECK_THROWS_AS(p1.addResourceCard("wood", 0), invalid_argument);
-        CHECK_THROWS_AS(p1.minusResourceCard("wheat", -3), invalid_argument);
-        CHECK_THROWS_AS(p1.minusResourceCard("dogs", 2), invalid_argument);
+        CHECK_THROWS_AS(p1.minusResourceCard(ariel::ResourceType::WOOD, 1), invalid_argument);
+        CHECK_THROWS_AS(p1.addResourceCard(ariel::ResourceType::WOOD, -1), invalid_argument);
+        CHECK_THROWS_AS(p1.addResourceCard(ariel::ResourceType::WOOD, 0), invalid_argument);
+        CHECK_THROWS_AS(p1.minusResourceCard(ariel::ResourceType::WHEAT, -3), invalid_argument);
 
     }
 
     SUBCASE("Player Development Card Management"){
 
-        p1.addResourceCard("wheat", 1);
-        p1.addResourceCard("sheep", 1);
-        p1.addResourceCard("ore", 1);
+        p1.addResourceCard(ariel::ResourceType::WHEAT, 1);
+        p1.addResourceCard(ariel::ResourceType::SHEEP, 1);
+        p1.addResourceCard(ariel::ResourceType::ORE, 1);
 
         ariel::DevelopmentCard dc1(CardType::KNIGHT);
 
@@ -99,33 +98,31 @@ TEST_CASE("Player class") {
 
     SUBCASE("Trade resources"){
 
-        p1.addResourceCard("ore", 5);
+        p1.addResourceCard(ariel::ResourceType::ORE, 5);
 
         ariel::Player p2("Bob");
 
-        p2.addResourceCard("wood", 1);
-        p2.addResourceCard("brick", 2);
-        p2.addResourceCard("wheat", 3);
-        p2.addResourceCard("sheep", 4);
-        p2.addResourceCard("ore", 5);
+        p2.addResourceCard(ariel::ResourceType::WOOD, 1);
+        p2.addResourceCard(ariel::ResourceType::BRICK, 2);
+        p2.addResourceCard(ariel::ResourceType::WHEAT, 3);
+        p2.addResourceCard(ariel::ResourceType::SHEEP, 4);
+        p2.addResourceCard(ariel::ResourceType::ORE, 5);
 
-        p1.trade(&p2, "wood", 1, "ore", 1);
+        p1.trade(&p2, ariel::ResourceType::WOOD, 1, ariel::ResourceType::ORE, 1);
 
-        CHECK(p1.getResources()["ore"] == 4);
-        CHECK(p1.getResources()["wood"] == 1);
-        CHECK(p2.getResources()["ore"] == 6);
-        CHECK(p2.getResources()["wood"] == 0);
+        CHECK(p1.getResources()[ariel::ResourceType::ORE] == 4);
+        CHECK(p1.getResources()[ariel::ResourceType::WOOD] == 1);
+        CHECK(p2.getResources()[ariel::ResourceType::ORE] == 6);
+        CHECK(p2.getResources()[ariel::ResourceType::WOOD] == 0);
 
-        CHECK_THROWS_AS(p1.trade(&p1, "sheep", 1, "ore", 1), invalid_argument);
-        CHECK_THROWS_AS(p1.trade(&p2, "sheep", -2, "ore",1), invalid_argument);
+        CHECK_THROWS_AS(p1.trade(&p1, ariel::ResourceType::SHEEP, 1, ariel::ResourceType::ORE, 1), invalid_argument);
+        CHECK_THROWS_AS(p1.trade(&p2, ariel::ResourceType::SHEEP, -2, ariel::ResourceType::ORE,1), invalid_argument);
 
-        p1.tradeFourForOne("ore", "brick");
+        p1.tradeFourForOne(ariel::ResourceType::ORE, ariel::ResourceType::BRICK);
 
-        CHECK(p1.getResources()["ore"] == 0);
-        CHECK(p1.getResources()["wood"] == 1);
-        CHECK(p1.getResources()["brick"] == 1);
-
-        CHECK_THROWS_AS(p1.tradeFourForOne("dog", "wood"), invalid_argument);
+        CHECK(p1.getResources()[ariel::ResourceType::ORE] == 0);
+        CHECK(p1.getResources()[ariel::ResourceType::WOOD] == 1);
+        CHECK(p1.getResources()[ariel::ResourceType::BRICK] == 1);
 
     }
 
@@ -176,22 +173,22 @@ TEST_CASE("Board") {
 
         auto tiles = board.getTiles();
 
-        CHECK(tiles[0]->getType() == "ore");
+        CHECK(tiles[0]->getType() == ariel::ResourceType::ORE);
         CHECK(tiles[0]->getNumber() == 10);
 
-        CHECK(tiles[1]->getType() == "sheep");
+        CHECK(tiles[1]->getType() == ariel::ResourceType::SHEEP);
         CHECK(tiles[1]->getNumber() == 2);
 
-        CHECK(tiles[2]->getType() == "wood");
+        CHECK(tiles[2]->getType() == ariel::ResourceType::WOOD);
         CHECK(tiles[2]->getNumber() == 9);
 
-        CHECK(tiles[3]->getType() == "wheat");
+        CHECK(tiles[3]->getType() == ariel::ResourceType::WHEAT);
         CHECK(tiles[3]->getNumber() == 12);
 
-        CHECK(tiles[4]->getType() == "brick");
+        CHECK(tiles[4]->getType() == ariel::ResourceType::BRICK);
         CHECK(tiles[4]->getNumber() == 6);
 
-        CHECK(tiles[5]->getType() == "sheep");
+        CHECK(tiles[5]->getType() == ariel::ResourceType::SHEEP);
         CHECK(tiles[5]->getNumber() == 4);
 
     }
@@ -385,7 +382,7 @@ TEST_CASE("Tile class"){
     ariel::Tile t1(1);
 
     CHECK(t1.getId() == 1);
-    CHECK(t1.getType() == "None");
+    CHECK(t1.getType() == ariel::ResourceType::NONE);
 
     SUBCASE("Tile type and number"){
 
@@ -394,7 +391,7 @@ TEST_CASE("Tile class"){
         t2.setType(ariel::ResourceType::ORE);
         t2.setNumber(10);
 
-        CHECK(t2.getType() == "ore");
+        CHECK(t2.getType() == ariel::ResourceType::ORE);
         CHECK(t2.getNumber() == 10);
 
         CHECK_THROWS_AS(t2.setNumber(1), invalid_argument);
@@ -403,7 +400,7 @@ TEST_CASE("Tile class"){
         t1.setType(ariel::ResourceType::WOOD);
         t1.setNumber(9);
 
-        CHECK(t1.getType() == "wood");
+        CHECK(t1.getType() == ariel::ResourceType::WOOD);
         CHECK(t1.getNumber() == 9);
     }
 

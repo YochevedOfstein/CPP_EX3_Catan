@@ -192,7 +192,7 @@ void Catan::playTurn(Player *player){
     for(Player *p : players){
         for(Tile *tile : p->getTiles()){
             if(tile->getNumber() == dice){
-                if(tile->getType() != "desert"){
+                if(tile->getType() != ResourceType::DESERT){
                 p->addResourceCard(tile->getType(), 1);
                 }
             }
@@ -282,7 +282,7 @@ void Catan::checkLargestArmy(){
     }
 }
 
-void Catan::playMonopolyDevCard(Player *player, string resource){
+void Catan::playMonopolyDevCard(Player *player, ResourceType resource){
     if(isFirstRound){
         cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
         return;
@@ -304,7 +304,7 @@ void Catan::playMonopolyDevCard(Player *player, string resource){
     return;
 }
 
-void Catan::playYearOfPlentyDevCard(Player *player, string resource1, string resource2){
+void Catan::playYearOfPlentyDevCard(Player *player, ResourceType resource1, ResourceType resource2){
     if(isFirstRound){
         cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
         return;

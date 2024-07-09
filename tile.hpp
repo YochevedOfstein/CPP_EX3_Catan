@@ -21,7 +21,8 @@ namespace ariel{
 
         public:
             Tile(int ID);
-            string getType() const;
+            string getTypeString() const;
+            ResourceType getType() const;
             void setType(ResourceType type);
             int getNumber() const;
             void setNumber(int number);

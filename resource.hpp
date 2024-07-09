@@ -26,7 +26,8 @@ namespace ariel {
             Resource(ResourceType type);
 
             ResourceType getType() const;
-            string getTypeName() const;
+            string getTypeNameForResource();
+            static string getTypeName(ResourceType retype);
     };
 
 }
