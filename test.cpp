@@ -489,6 +489,10 @@ TEST_CASE("Catan class"){
         CHECK(p1.citiesOnBoard == 0);
         CHECK(p1.getPoints() == 2);
 
+        CHECK(p1.getResources()[ariel::ResourceType::BRICK] == 1);
+        CHECK(p1.getResources()[ariel::ResourceType::SHEEP] == 1);
+        CHECK(p1.getResources()[ariel::ResourceType::ORE] == 1);
+
         CHECK(newGame.getCurrentPlayer()->getName() == "Bob");
 
         newGame.firstRound(&p3, 13, 15, 42, 58);
@@ -505,6 +509,9 @@ TEST_CASE("Catan class"){
 
         CHECK(newGame.getCurrentPlayer()->getName() == "Alice");
 
+        CHECK(p2.getResources()[ariel::ResourceType::WHEAT] == 2);
+        CHECK(p2.getResources()[ariel::ResourceType::ORE] == 1);
+
         CHECK_THROWS_AS(newGame.playTurn(&p3), invalid_argument);
 
         newGame.firstRound(&p3, 44, 60, 43, 59);
@@ -517,9 +524,197 @@ TEST_CASE("Catan class"){
         CHECK(p3.getPoints() == 2);
         CHECK(p3.settelmentsOnBoard == 2);
 
+        CHECK(p3.getResources()[ariel::ResourceType::SHEEP] == 2);
+        CHECK(p3.getResources()[ariel::ResourceType::WHEAT] == 1);
+
         CHECK_FALSE(newGame.isFirstRound); 
     }
-    
+
+    SUBCASE("Adj settlements on first round"){
+
+        newGame.firstRound(&p1, 29, 41, 10, 13);
+
+        CHECK(p1.getResources()[ariel::ResourceType::ORE] == 1);
+        CHECK(p1.getResources()[ariel::ResourceType::SHEEP] == 1);
+        CHECK(p1.getResources()[ariel::ResourceType::BRICK] == 1);
+
+        newGame.firstRound(&p2, 13, 15, 22, 29);
+
+        CHECK(p2.getResources()[ariel::ResourceType::SHEEP] == 1);
+        CHECK(p2.getResources()[ariel::ResourceType::WOOD] == 1);
+
+    }
+
+    SUBCASE("PlayTurn"){
+
+        CHECK_THROWS_AS(newGame.playTurn(&p1), invalid_argument);
+
+        newGame.firstRound(&p1, 29, 41, 10, 13);
+        newGame.firstRound(&p2, 13, 15, 42, 58);
+        newGame.firstRound(&p3, 22, 29, 44, 52);
+
+        CHECK_FALSE(newGame.isFirstRound);
+
+        newGame.playTurn(&p1);
+
+        CHECK(newGame.getCurrentPlayer()->getName() != "Bob");
+        CHECK(newGame.getCurrentPlayer()->getName() == "Charlie");
+
+        p1.endTurn();
+
+        newGame.playTurn(&p2);
+
+        CHECK(newGame.getCurrentPlayer()->getName() == "Bob");
+    }
+
+    SUBCASE("Game progression and ending") {
+
+        newGame.firstRound(&p1, 29, 41, 10, 13);
+        newGame.firstRound(&p2, 13, 15, 42, 58);
+        newGame.firstRound(&p3, 22, 29, 44, 52);
+
+        CHECK(p1.getPoints() == 2);
+        CHECK(p2.getPoints() == 2);
+        CHECK(p3.getPoints() == 2);
+
+        CHECK_FALSE(newGame.isThereAWinner());
+
+        p1.addPoints(8);
+
+        CHECK(newGame.isThereAWinner() == true);
+        CHECK(newGame.gameOver == true);
+
+    }
+}
+
+TEST_CASE("Catan Development Card Tests") {
+    ariel::Player p1("Chen");
+    ariel::Player p2("Yoav");
+    ariel::Player p3("Yoni");
+
+    ariel::Catan game(p1, p2, p3);
+    game.ChooseStartingPlayer();
+
+    game.firstRound(&p1, 10, 13, 22, 29);
+    game.firstRound(&p2, 31, 43, 43, 59);
+    game.firstRound(&p3, 18, 25, 35, 37);
+
+    CHECK(p1.getResources()[ariel::ResourceType::WOOD] == 1);
+    CHECK(p1.getResources()[ariel::ResourceType::SHEEP] == 1);  
+
+    CHECK(!game.isFirstRound); 
+
+    p1.addResourceCard(ariel::ResourceType::SHEEP, 1);
+    p1.addResourceCard(ariel::ResourceType::WHEAT, 1);
+    p1.addResourceCard(ariel::ResourceType::ORE, 1);
+
+    SUBCASE("Buy Development Card") {
+
+        game.buyDevCard(&p1);
+
+        CHECK(p1.getDevelopmentCards().size() == 1);
+        CHECK(game.getDevDeckSize() == 24);
+    }
+
+    SUBCASE("Play Knight Development Card") {
+
+        p1.buyDevelopmentCard(new ariel::DevelopmentCard(CardType::KNIGHT));
+
+        game.playKnightDevCard(&p1);
+
+        CHECK(p1.getDevelopmentCards().size() == 1);
+
+        CHECK(p1.getKnights() == 0); //can't play card when it was just boaught
+        game.checkLargestArmy();
+
+        p1.endTurn();
+        game.playTurn(&p2);
+        p2.endTurn();
+        game.playTurn(&p3);
+        p3.endTurn();
+        game.playTurn(&p1);
+        game.playKnightDevCard(&p1);
+
+        CHECK(p1.getKnights() == 1);
+    }
+
+    SUBCASE("Play Victory Point Development Card") {
+
+        p1.buyDevelopmentCard(new ariel::DevelopmentCard(CardType::VICTORY_POINT));
+
+        CHECK(p1.getDevelopmentCards().size() == 1);
+
+        game.playVictoryPointDevCard(&p1);
+
+        CHECK(p1.getPoints() == 3); // 2 from initial settlements + 1 from VP card
+    }
+
+    SUBCASE("Play Road Building Development Card") {
+
+        p1.buyDevelopmentCard(new ariel::DevelopmentCard(CardType::ROAD_BUILDING));
+
+        CHECK(p1.getDevelopmentCards().size() == 1);
+
+        p1.endTurn();
+        game.playTurn(&p2);
+        p2.endTurn();
+        game.playTurn(&p3);
+        p3.endTurn();
+        game.playTurn(&p1);
+
+        game.playRoadBuildingDevCard(&p1, 20, 28);
+
+        CHECK(game.getBoard()->getRoads()[20]->getOwner() == "Chen");
+        CHECK(game.getBoard()->getRoads()[28]->getOwner() == "Chen");
+    }
+
+    SUBCASE("Play Monopoly Development Card") {
+
+        p1.buyDevelopmentCard(new ariel::DevelopmentCard(CardType::MONOPOLY));
+
+        CHECK(p1.getDevelopmentCards().size() == 1);
+
+        p2.addResourceCard(ariel::ResourceType::WOOD, 2);
+        p3.addResourceCard(ariel::ResourceType::WOOD, 3);
+
+        p1.endTurn();
+        game.playTurn(&p2);
+        p2.endTurn();
+        game.playTurn(&p3);
+        p3.endTurn();
+        game.playTurn(&p1);
+
+        int numwood = p1.getNumOfWood();
+
+        int p2num = p2.getNumOfWood();
+        int p3num = p3.getNumOfWood();
+
+        game.playMonopolyDevCard(&p1, ariel::ResourceType::WOOD);
+
+        CHECK(p1.getResources()[ariel::ResourceType::WOOD] == numwood+p2num+p3num); // from p2 + from p3 + from p1
+        CHECK(p2.getResources()[ariel::ResourceType::WOOD] == 0);
+        CHECK(p3.getResources()[ariel::ResourceType::WOOD] == 0);
+    }
+
+    SUBCASE("Play Year of Plenty Development Card") {
+
+        p1.buyDevelopmentCard(new ariel::DevelopmentCard(CardType::YEAR_OF_PLENTY));
+
+        p1.endTurn();
+        game.playTurn(&p2);
+        p2.endTurn();
+        game.playTurn(&p3);
+        p3.endTurn();
+        game.playTurn(&p1);
+
+        int numwheat = p1.getNumOfWheat();
+        int numbrick = p1.getNumOfBrick();
+
+        game.playYearOfPlentyDevCard(&p1, ariel::ResourceType::BRICK, ariel::ResourceType::WHEAT);
+
+        CHECK(p1.getResources()[ariel::ResourceType::BRICK] == numbrick+1);
+        CHECK(p1.getResources()[ariel::ResourceType::WHEAT] == numwheat+1);
+    }
 }
 
     

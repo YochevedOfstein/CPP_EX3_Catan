@@ -27,6 +27,7 @@ namespace ariel{
             ~Catan();
             vector<DevelopmentCard*> devDeck;
             bool isFirstRound;
+            bool gameOver;
 
             void ChooseStartingPlayer();
             void setPlayerColors();
@@ -43,6 +44,7 @@ namespace ariel{
             void playRoadBuildingDevCard(Player *player, int road1, int road2);
             void playKnightDevCard(Player *player);
             void playVictoryPointDevCard(Player *player);
+            int getDevDeckSize() const;
 
             Player* getCurrentPlayer() const;
             Board* getBoard() const;

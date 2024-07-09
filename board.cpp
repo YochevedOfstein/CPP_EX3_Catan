@@ -519,6 +519,17 @@ bool Board::isValidPlaceForRoad(int roadId, string playerName){
     return true;
 }
 
+bool Board::areRoadsAdj(int road1, int road2){
+    for(int inter1 : roads[road1]->getAdjIntersections()){
+        for(int inter2 : roads[road2]->getAdjIntersections()){
+            if(inter1 == inter2){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void Board::buildCity(int intersectionId, string playerName){
     if(intersections[intersectionId]->getOwner() != playerName){
         cout << playerName << " You don't own this intersection - can't build city." << endl;

@@ -33,12 +33,6 @@ namespace ariel{
             vector<DevelopmentCard*> developmentCards;
             vector<Tile*> tiles;
             int knights;
-            int getNumOfWood();
-            int getNumOfBrick();
-            int getNumOfSheep();
-            int getNumOfWheat();
-            int getNumOfOre();
-
 
         public:
             Player(const string name);
@@ -77,6 +71,11 @@ namespace ariel{
             vector<DevelopmentCard*> getDevelopmentCards() const;
             void printDevelopmentCards();
             void tradeFourForOne(ResourceType resource1, ResourceType resource2);
+            int getNumOfWood();
+            int getNumOfBrick();
+            int getNumOfSheep();
+            int getNumOfWheat();
+            int getNumOfOre();
 
 
     }; 

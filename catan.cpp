@@ -19,7 +19,7 @@ const int MIN_LARGEST_ARMY_SIZE = 3;
 using namespace std;
 using namespace ariel;
 
-Catan::Catan(Player &p1, Player &p2, Player &p3): players{&p1, &p2, &p3}, currentPlayer(nullptr), HasLargestArmy(nullptr), devDeck(DEVELOPMENT_DECK_SIZE), isFirstRound(true){
+Catan::Catan(Player &p1, Player &p2, Player &p3): players{&p1, &p2, &p3}, currentPlayer(nullptr), HasLargestArmy(nullptr), devDeck(DEVELOPMENT_DECK_SIZE), isFirstRound(true), gameOver(false){
     board = new Board();
     initDevDeck();
 
@@ -35,21 +35,6 @@ Catan::~Catan(){
 }
 
 void Catan::ChooseStartingPlayer(){
-
-    // int highest = 0;
-    // Player *startingPlayer = nullptr;
-    // for (Player *player : players) {
-    //     int roll = player->rollDice();
-    //     cout << player->getName() << " rolled a " << roll << endl;
-    //     if (roll > highest) {
-    //         highest = roll;
-    //         startingPlayer = player;
-    //     }
-    // }
-    // currentPlayer = startingPlayer;
-    // currentPlayer->myTurn = true;
-    // setPlayerColors();
-    // cout << startingPlayer->getName() << " goes first!" << endl;
 
     currentPlayer = players[0];
     currentPlayer->myTurn = true;
@@ -81,14 +66,6 @@ void Catan::firstRound(Player *player, int intersectionID1, int road1, int inter
             player->placeSettelemnt(intersectionID2, *board);
             player->placeRoad(road2, *board);
 
-            for(Tile* tile : player->getTiles()){
-                vector<int> tileAdjIntersections = tile->getAdjIntersections();
-                for(int inter : tileAdjIntersections){
-                    if(inter == intersectionID2){
-                        player->addResourceCard(tile->getType(), 1);
-                    }
-                }
-            }
             cout << player->getName() << " placed 2 settlement on intersections: "<< intersectionID1 << ", "<< intersectionID2 << endl;
             cout << player->getName() << " placed 2 roads on roads: "<< road1 << ", "<< road2 << endl;
 
@@ -144,6 +121,7 @@ bool Catan::isThereAWinner(){
         }
     }
     if (winner->getPoints() >= WINNING_POINTS) {
+        gameOver = true;
         return true;
     } else {
         return false;
@@ -178,6 +156,10 @@ void Catan::nextTurn(){
 void Catan::playTurn(Player *player){
     if(isFirstRound){
         throw invalid_argument("First round is not over, every player must choose 2 settlements and 2 roads");
+    }
+    if(gameOver){
+        cout << "The game is over. " << currentPlayer->getName() << " is the winner!" << endl;
+        return;
     }
     if(!currentPlayer->myTurn){
         nextTurn();
@@ -301,7 +283,9 @@ void Catan::playMonopolyDevCard(Player *player, ResourceType resource){
             }
         }
     }
-    return;
+    if (isThereAWinner()) {
+        printWinner();
+    }
 }
 
 void Catan::playYearOfPlentyDevCard(Player *player, ResourceType resource1, ResourceType resource2){
@@ -317,7 +301,9 @@ void Catan::playYearOfPlentyDevCard(Player *player, ResourceType resource1, Reso
         player->addResourceCard(resource1, 1);
         player->addResourceCard(resource2, 1);
     }
-    return;
+    if (isThereAWinner()) {
+        printWinner();
+    }
 }
 
 void Catan::playRoadBuildingDevCard(Player *player, int road1, int road2){
@@ -329,11 +315,21 @@ void Catan::playRoadBuildingDevCard(Player *player, int road1, int road2){
         cout << player->getName() << " It's not your turn." << endl;
         return;
     }
-    if(player->canPlayDevelopmentCard(CardType::ROAD_BUILDING)){
-        player->placeRoad(road1, *board);
-        player->placeRoad(road2, *board);
+    if(getBoard()->isValidPlaceForRoad(road1, player->getName()) || getBoard()->isValidPlaceForRoad(road2, player->getName())){
+        if(getBoard()->areRoadsAdj(road1, road2)){
+            if(player->canPlayDevelopmentCard(CardType::ROAD_BUILDING)){
+                getBoard()->placeRoad(road1, player->getName());
+                getBoard()->placeRoad(road2, player->getName());
+                if (isThereAWinner()) {
+                    printWinner();
+                }
+                return;
+            }
+        }  
+    } 
+    if (isThereAWinner()) {
+        printWinner();
     }
-    return;
 }
 
 void Catan::playKnightDevCard(Player *player){
@@ -348,7 +344,9 @@ void Catan::playKnightDevCard(Player *player){
     if(player->canPlayDevelopmentCard(CardType::KNIGHT)){
         player->addKnight();
     }
-    return;
+    if (isThereAWinner()) {
+        printWinner();
+    }
 }
 
 void Catan::playVictoryPointDevCard(Player *player){
@@ -356,19 +354,22 @@ void Catan::playVictoryPointDevCard(Player *player){
         cout << "First round is not over, every player must choose 2 settlements and 2 roads" << endl;
         return;
     }
-    if(player != currentPlayer){
-        cout << player->getName() << " It's not your turn." << endl;
-        return;
-    }
+
     if(player->canPlayDevelopmentCard(CardType::VICTORY_POINT)){
         player->addPoints(1);
     }
-    return;
+    if (isThereAWinner()) {
+        printWinner();
+    }
 }
 
 Player* Catan::getCurrentPlayer() const{
 
     return currentPlayer;
+}
+
+int Catan::getDevDeckSize()const {
+    return devDeck.size();
 }
 
 

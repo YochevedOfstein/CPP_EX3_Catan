@@ -32,8 +32,18 @@ void Player::placeSettelemnt(int intersectionID, Board& board){
         addPoints(1);
         settelmentsOnBoard++;
         for(Tile* tile : board.getTilesAdjToSettlement(intersectionID)){
-            if(tile == nullptr || tile->getNumber() == 7){
-                break;
+            if(tile == nullptr){
+                continue;
+            } 
+            if(tile->getNumber() == 7){
+                continue;
+            }
+            if(getPoints() == 2){
+                for(int inter : tile->getAdjIntersections()){
+                    if(inter == intersectionID){
+                        addResourceCard(tile->getType(), 1);
+                    }
+                }
             }
             addTile(tile);
         }
@@ -136,7 +146,7 @@ bool Player::canPlayDevelopmentCard(CardType type){
     }
     for (auto devCard = developmentCards.begin(); devCard != developmentCards.end(); ++devCard) {
         if ((*devCard)->getType() == type) {
-            if((*devCard)->getBoughtThisTurn() == true){
+            if((*devCard)->getBoughtThisTurn() == true && type != CardType::VICTORY_POINT){
                 cout << "You can't play a card you just bought." << endl;
                 return false;
             }
@@ -339,7 +349,7 @@ void Player::printStatus(){
     printResources();
 }
 
-int Player::getNumOfWood(){
+int Player::getNumOfWood() {
     return resourceCards[ResourceType::WOOD];
 }
 
