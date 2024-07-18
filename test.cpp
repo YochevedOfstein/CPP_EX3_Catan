@@ -1,3 +1,5 @@
+// yocheved@davidowitz.net 324460682
+
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "catan.hpp"

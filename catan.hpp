@@ -1,3 +1,5 @@
+// yocheved@davidowitz.net 324460682
+
 #ifndef CATAN_HPP
 #define CATAN_HPP
 

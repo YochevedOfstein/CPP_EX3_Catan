@@ -1,3 +1,5 @@
+// yocheved@davidowitz.net 324460682
+
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
 

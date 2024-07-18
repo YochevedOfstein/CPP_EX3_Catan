@@ -1,3 +1,5 @@
+// yocheved@davidowitz.net 324460682
+
 #include "developmentCard.hpp"
 #include <iostream>
 #include <algorithm>

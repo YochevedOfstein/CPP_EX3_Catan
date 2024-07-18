@@ -1,3 +1,4 @@
+// yocheved@davidowitz.net 324460682
 #ifndef INTERSECTION_HPP
 #define INTERSECTION_HPP
 
