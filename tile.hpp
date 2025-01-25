@@ -1,4 +1,3 @@
-// yocheved@davidowitz.net 324460682
 
 #ifndef TILE_HPP
 #define TILE_HPP
