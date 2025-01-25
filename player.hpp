@@ -1,4 +1,3 @@
-// yocheved@davidowitz.net 324460682
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
