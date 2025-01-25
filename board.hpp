@@ -1,4 +1,4 @@
-// yocheved@davidowitz.net 324460682
+
 #ifndef BOARD_HPP
 #define BOARD_HPP
 
